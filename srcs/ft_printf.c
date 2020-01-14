@@ -14,10 +14,10 @@
 
 int ft_printf(const char *format, ...)
 {
-	va_list arg;
+	va_list args;
 	int done;
-	va_start (arg, format);
-	done = ft_vfprintf(STDOUT_FILENO, format, arg);
-	va_end (arg);
+	va_start (args, format);
+	done = ft_vfprintf(STDOUT_FILENO, format, args);
+	va_end (args);
 	return (done);
 }
