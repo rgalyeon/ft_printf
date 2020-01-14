@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   parse_placeholder.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/09 17:10:03 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/09 18:03:52 by rgalyeon         ###   ########.fr       */
+/*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
+/*   Updated: 2020/01/10 22:51:28 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf.h"
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
-
-# include <stdarg.h>
-# include "libft.h"
-
-typedef struct	s_ph
+char *parse_placeholder(char *format, int *size)
 {
-	int flag;
-	int width;
-	int precision;
-	int length;
-	int type;
-}				t_ph;
+	t_ph *placeholder;
 
-int ft_printf(const char *format, ...);
-int ft_vfprintf(int fd, const char *format, ...);
-char *parse_placeholder(char *format, int *size);
+	if (!(placeholder = (t_ph *)ft_memalloc(sizeof(t_ph))))
+		exit(MALLOC_ERR);
+	
 
 
-#endif
+	return NULL;
+}
