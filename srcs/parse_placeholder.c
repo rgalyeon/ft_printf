@@ -6,11 +6,12 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/14 22:49:49 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/15 23:37:17 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 static void parse_flags(t_ph *placeholder, char **format)
 {
@@ -32,12 +33,12 @@ static void parse_flags(t_ph *placeholder, char **format)
 
 //TODO Test width
 /**
- *
- * @param placeholder
- * @param format - given string
- * @param arg_ptr - va_list
- * @return -1 если ширина не указывалась
- */
+**
+** @param placeholder
+** @param format - given string
+** @param arg_ptr - va_list
+** @return -1 если ширина не указывалась
+*/
 
 static int parse_width(t_ph *placeholder, char **format, va_list arg_ptr)
 {
@@ -111,7 +112,7 @@ static int	parse_precision(t_ph *placeholder, char **format, va_list arg_ptr)
 		precision = va_arg(arg_ptr, int);
 		if (precision < 0)
 		{
-			placeholder->width = precision * -1;
+			placeholder->width = (unsigned int)precision * -1;
 			placeholder->flag |= MINUS.code;
 			precision = -1;
 		}
@@ -120,6 +121,46 @@ static int	parse_precision(t_ph *placeholder, char **format, va_list arg_ptr)
 	placeholder->width = (ft_isdigit(**format) || (**format == '*')) ?
 			parse_width(placeholder, format, arg_ptr) : placeholder->width;
 	return (precision);
+}
+
+static void	parse_length(t_ph *placeholder, char **format)
+{
+	int			i;
+	u_int8_t	length;
+	char		length_symbol;
+
+	i = 0;
+	length = 0;
+	while (i < 3)
+	{
+		length_symbol = LENGTH(i).symbol;
+		if (**format == length_symbol)
+		{
+			length |= LENGTH(i).code;
+			(*format)++;
+			if (length_symbol == 'l' && **format == 'l' && ((*format)++))
+				length |= LENGTH_LONG_LONG;
+			else if (length_symbol == 'h' && **format == 'h' && ((*format)++))
+				length |= LENGTH_CHAR;
+			i = 0;
+		}
+		else
+			i++;
+	}
+	placeholder->length = length;
+}
+
+static void parse_type(t_ph *placeholder, char **format)
+{
+	const char			curr_char = **format;
+	register u_int8_t	i;
+
+	i = 0;
+	while (i < N_TYPES)
+	{
+		if (curr_char == TYPE[i++])
+			placeholder->type = curr_char;
+	}
 }
 
 char		*parse_placeholder(char **format, int *size, va_list arg_ptr)
@@ -131,5 +172,14 @@ char		*parse_placeholder(char **format, int *size, va_list arg_ptr)
 	parse_flags(placeholder, format);
 	placeholder->width = parse_width(placeholder, format, arg_ptr);
 	placeholder->precision = parse_precision(placeholder, format, arg_ptr);
+	parse_length(placeholder, format);
+	parse_type(placeholder, format);
+	printf("flag = %d\nwidth = %lld\nprecision = %d\nlength = %d\ntype = "
+		"%c\n\n",
+			placeholder->flag,
+			placeholder->width,
+			placeholder->precision,
+			placeholder->length,
+			placeholder->type);
 	return (NULL);
 }
