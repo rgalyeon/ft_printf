@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:10:03 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/16 14:21:47 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/16 18:53:25 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 ** Structure for printf's placeholder
 ** Example: %[flag][width][.precision][length]type
 */
+
+typedef u_int8_t t_bool;
+
+# define TRUE 1
+# define FALSE 0
 
 typedef struct	s_ph
 {
@@ -72,9 +77,32 @@ typedef struct s_flag
 # define TYPE		"diouxXcsp"
 # define N_TYPES	9
 
+typedef char *(*t_ptr)(t_ph *placeholder, va_list arg_ptr);
+
+# define _DI processing_di
+# define _O processing_o
+# define _X processing_x
+# define _U processing_u
+# define _C processing_c
+# define _STR processing_s
+# define _P processing_p
+
+# define CHAR 6
+
+# define _PROCESSING_TYPE(i) {_DI, _DI, _O, _U, _X, _X, _C, _STR, _P}[i]
+# define PROCESSING_TYPE(i, ph, va) (t_ptr[9])_PROCESSING_TYPE(i)(ph, va)
+
+
 int				ft_printf(const char *format, ...);
 int				ft_vfprintf(int fd, const char *format, va_list arg_ptr);
 char			*parse_placeholder(char **format, int *size, va_list arg_ptr);
+char			*processing_types(t_ph *placeholder, va_list arg_ptr);
+
+/**
+** Types processing functions
+*/
+
+char			*processing_di(t_ph *placeholder, va_list arg_ptr);
 
 /**
 ** Utils for development

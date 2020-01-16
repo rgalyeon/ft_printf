@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/16 17:00:24 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/16 18:29:23 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,11 @@ static int	parse_precision(t_ph *placeholder, char **format, va_list arg_ptr)
 	return (precision);
 }
 
+/**
+ * TODO: think about parse something after length
+ * @param placeholder
+ * @param format
+ */
 static void	parse_length(t_ph *placeholder, char **format)
 {
 	int			i;
@@ -176,6 +181,6 @@ char		*parse_placeholder(char **format, int *size, va_list arg_ptr)
 	parse_length(placeholder, format);
 	parse_type(placeholder, format);
 	print_placeholder(placeholder); //TODO delete
-
+	processing_types(placeholder, arg_ptr);
 	return (NULL);
 }
