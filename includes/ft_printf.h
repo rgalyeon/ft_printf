@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:10:03 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/15 23:33:23 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/16 14:21:47 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,11 @@ int				ft_printf(const char *format, ...);
 int				ft_vfprintf(int fd, const char *format, va_list arg_ptr);
 char			*parse_placeholder(char **format, int *size, va_list arg_ptr);
 
+/**
+** Utils for development
+** TODO: delete when project is done
+**/
+
+void	print_placeholder(t_ph *placeholder);
 
 #endif

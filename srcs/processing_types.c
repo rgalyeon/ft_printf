@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   processing_types.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/15 14:50:12 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/16 16:42:38 by rgalyeon         ###   ########.fr       */
+/*   Created: 2020/01/16 17:57:46 by rgalyeon          #+#    #+#             */
+/*   Updated: 2020/01/16 17:57:46 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int main()
+void processing_types(t_ph *placeholder, va_list arg_ptr)
 {
-	ft_printf("he %-5.3d");
-	ft_printf("%2.*3**oXx", 10, -15, 2);
-	ft_printf("%2.*3**llu", 10, -15, 2);
-	ft_printf("%2.*3**lhlp", 10, -15, 2);
-	ft_printf("%2.*3**lhlhlLhhsd", 10, -15, 2);
-	ft_printf("%2.*3**hhhhhhhlllllsd", 10, -15, 2);
-
-//	printf("%2.*3**d\n", 10, -15, 2, -24242);
-//	printf("%lld\n", UINT64_MAX);
-//	printf("%zu\n", sizeof(__int128_t));
 
 }

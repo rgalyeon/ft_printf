@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/15 23:37:17 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/16 17:00:24 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,12 +136,13 @@ static void	parse_length(t_ph *placeholder, char **format)
 		length_symbol = LENGTH(i).symbol;
 		if (**format == length_symbol)
 		{
-			length |= LENGTH(i).code;
 			(*format)++;
 			if (length_symbol == 'l' && **format == 'l' && ((*format)++))
 				length |= LENGTH_LONG_LONG;
 			else if (length_symbol == 'h' && **format == 'h' && ((*format)++))
 				length |= LENGTH_CHAR;
+			else
+				length |= LENGTH(i).code;
 			i = 0;
 		}
 		else
@@ -174,12 +175,7 @@ char		*parse_placeholder(char **format, int *size, va_list arg_ptr)
 	placeholder->precision = parse_precision(placeholder, format, arg_ptr);
 	parse_length(placeholder, format);
 	parse_type(placeholder, format);
-	printf("flag = %d\nwidth = %lld\nprecision = %d\nlength = %d\ntype = "
-		"%c\n\n",
-			placeholder->flag,
-			placeholder->width,
-			placeholder->precision,
-			placeholder->length,
-			placeholder->type);
+	print_placeholder(placeholder); //TODO delete
+
 	return (NULL);
 }
