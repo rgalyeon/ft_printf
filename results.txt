@@ -1,0 +1,350 @@
+Test 622 (d_size_l_pos_ref) : FAILED.
+    First line of code: {return test("%ld", l_pos_1);}
+      expected output : "22337203685477"
+      your output     : "-921221019"
+      expected (nonprintable as hex) : "22337203685477"
+      actual   (nonprintable as hex) : "-921221019"
+
+Test 623 (d_size_l_pos_ref_lmax) : FAILED.
+    First line of code: {return test("%ld", lmax);}
+      expected output : "9223372036854775807"
+      your output     : "-1"
+      expected (nonprintable as hex) : "9223372036854775807"
+      actual   (nonprintable as hex) : "-1"
+
+Test 624 (d_size_ll_pos_ref_llmax) : FAILED.
+    First line of code: {return test("%lld", llmax);}
+      expected output : "9223372036854775807"
+      your output     : "-1"
+      expected (nonprintable as hex) : "9223372036854775807"
+      actual   (nonprintable as hex) : "-1"
+
+Test 625 (d_size_l_neg_ref) : FAILED.
+    First line of code: {return test("%ld", l_neg_1);}
+      expected output : "-22337203685477"
+      your output     : "--921221019"
+      expected (nonprintable as hex) : "-22337203685477"
+      actual   (nonprintable as hex) : "--921221019"
+
+Test 626 (d_size_ll_pos_ref) : FAILED.
+    First line of code: {return test("%lld", ll_pos_1);}
+      expected output : "22337203685477"
+      your output     : "-921221019"
+      expected (nonprintable as hex) : "22337203685477"
+      actual   (nonprintable as hex) : "-921221019"
+
+Test 627 (d_size_ll_neg_ref) : FAILED.
+    First line of code: {return test("%lld", ll_neg_1);}
+      expected output : "-22337203685477"
+      your output     : "--921221019"
+      expected (nonprintable as hex) : "-22337203685477"
+      actual   (nonprintable as hex) : "--921221019"
+
+Test 628 (d_size_l_pos_big) : FAILED.
+    First line of code: {return test("%ld", 22337203685477);}
+      expected output : "22337203685477"
+      your output     : "-921221019"
+      expected (nonprintable as hex) : "22337203685477"
+      actual   (nonprintable as hex) : "-921221019"
+
+Test 629 (d_size_l_neg_big) : FAILED.
+    First line of code: {return test("%ld", -22337203685477);}
+      expected output : "-22337203685477"
+      your output     : "--921221019"
+      expected (nonprintable as hex) : "-22337203685477"
+      actual   (nonprintable as hex) : "--921221019"
+
+Test 630 (d_size_ll_pos_big) : FAILED.
+    First line of code: {return test("%lld", 522337203685470ll);}
+      expected output : "522337203685470"
+      your output     : "461015134"
+      expected (nonprintable as hex) : "522337203685470"
+      actual   (nonprintable as hex) : "461015134"
+
+Test 631 (d_size_ll_neg_big) : FAILED.
+    First line of code: {return test("%lld", -522337203685470ll);}
+      expected output : "-522337203685470"
+      your output     : "-461015134"
+      expected (nonprintable as hex) : "-522337203685470"
+      actual   (nonprintable as hex) : "-461015134"
+
+Test 632 (d_llmax) : FAILED.
+    First line of code: {return test("%lld", 9223372036854775807ll);}
+      expected output : "9223372036854775807"
+      your output     : "-1"
+      expected (nonprintable as hex) : "9223372036854775807"
+      actual   (nonprintable as hex) : "-1"
+
+Test 633 (d_llmin) : FAILED.
+    First line of code: {return test("%lld", llmin);}
+      expected output : "-9223372036854775807"
+      your output     : "--1"
+      expected (nonprintable as hex) : "-9223372036854775807"
+      actual   (nonprintable as hex) : "--1"
+
+Test 634 (d_lmax) : FAILED.
+    First line of code: {return test("%ld", 9223372036854775807l);}
+      expected output : "9223372036854775807"
+      your output     : "-1"
+      expected (nonprintable as hex) : "9223372036854775807"
+      actual   (nonprintable as hex) : "-1"
+
+Test 635 (d_lmin) : FAILED.
+    First line of code: {return test("%ld", lmin);}
+      expected output : "-9223372036854775807"
+      your output     : "--1"
+      expected (nonprintable as hex) : "-9223372036854775807"
+      actual   (nonprintable as hex) : "--1"
+
+Test 640 (d_size_l_pos_big_zp) : FAILED.
+    First line of code: {return test("%037ld", 22337203685477l);}
+      expected output : "0000000000000000000000022337203685477"
+      your output     : "00000000000000000000000-921221019"
+      expected (nonprintable as hex) : "0000000000000000000000022337203685477"
+      actual   (nonprintable as hex) : "00000000000000000000000-921221019"
+
+Test 641 (d_size_l_neg_big_prec) : FAILED.
+    First line of code: {return test("%.37ld", -22337203685477l);}
+      expected output : "-0000000000000000000000022337203685477"
+      your output     : "-00000000000000000000000-921221019"
+      expected (nonprintable as hex) : "-0000000000000000000000022337203685477"
+      actual   (nonprintable as hex) : "-00000000000000000000000-921221019"
+
+Test 642 (d_size_ll_pos_big_width) : FAILED.
+    First line of code: {return test("%37lld", 522337203685470ll);}
+      expected output : "                      522337203685470"
+      your output     : "                      461015134"
+      expected (nonprintable as hex) : "                      522337203685470"
+      actual   (nonprintable as hex) : "                      461015134"
+
+Test 643 (d_size_ll_neg_big_lj) : FAILED.
+    First line of code: {return test("%-37lld", -522337203685470ll);}
+      expected output : "-522337203685470                     "
+      your output     : "-461015134                     "
+      expected (nonprintable as hex) : "-522337203685470                     "
+      actual   (nonprintable as hex) : "-461015134                     "
+
+Test 644 (d_size_l_pos_big_as) : FAILED.
+    First line of code: {return test("%+ld", 22337203685477l);}
+      expected output : "+22337203685477"
+      your output     : "+-921221019"
+      expected (nonprintable as hex) : "+22337203685477"
+      actual   (nonprintable as hex) : "+-921221019"
+
+Test 646 (d_size_follows_i_l) : FAILED.
+    First line of code: {return test("[%d] [%ld]", i_pos_1, l_pos_1);}
+      expected output : "[878023] [22337203685477]"
+      your output     : "[878023] [-921221019]"
+      expected (nonprintable as hex) : "[878023] [22337203685477]"
+      actual   (nonprintable as hex) : "[878023] [-921221019]"
+
+Test 647 (d_size_follows_i_ll) : FAILED.
+    First line of code: {return test("[%d] [%lld]", i_pos_1, ll_pos_1);}
+      expected output : "[878023] [22337203685477]"
+      your output     : "[878023] [-921221019]"
+      expected (nonprintable as hex) : "[878023] [22337203685477]"
+      actual   (nonprintable as hex) : "[878023] [-921221019]"
+
+Test 650 (d_size_ll_hh_ll) : FAILED.
+    First line of code: {return test("%lld%hhd%lld", ll_pos_1, ch_neg_1, ll_neg_1);}
+      expected output : "22337203685477-87-22337203685477"
+      your output     : "-921221019-87--921221019"
+      expected (nonprintable as hex) : "22337203685477-87-22337203685477"
+      actual   (nonprintable as hex) : "-921221019-87--921221019"
+
+Test 651 (d_size_h_l_hh) : FAILED.
+    First line of code: {return test("%hd%ld%hhd", sh_pos_1, l_neg_1, ch_neg_1);}
+      expected output : "3047-22337203685477-87"
+      your output     : "3047--921221019-87"
+      expected (nonprintable as hex) : "3047-22337203685477-87"
+      actual   (nonprintable as hex) : "3047--921221019-87"
+
+Test 652 (d_size_l_hh_h) : FAILED.
+    First line of code: {return test("%ld%hhd%hd", l_neg_1, ch_pos_1, sh_pos_1);}
+      expected output : "-223372036854771003047"
+      your output     : "--9212210191003047"
+      expected (nonprintable as hex) : "-223372036854771003047"
+      actual   (nonprintable as hex) : "--9212210191003047"
+
+Test 653 (d_size_n_ll_hh) : FAILED.
+    First line of code: {return test("%d%lld%hhd", i_pos_1, ll_neg_1, ch_pos_1);}
+      expected output : "878023-22337203685477100"
+      your output     : "878023--921221019100"
+      expected (nonprintable as hex) : "878023-22337203685477100"
+      actual   (nonprintable as hex) : "878023--921221019100"
+
+Test 654 (d_size_ll_n_l) : FAILED.
+    First line of code: {return test("%lli%d%ld", ll_neg_1, i_pos_1, l_pos_1);}
+      expected output : "-2233720368547787802322337203685477"
+      your output     : "--921221019878023-921221019"
+      expected (nonprintable as hex) : "-2233720368547787802322337203685477"
+      actual   (nonprintable as hex) : "--921221019878023-921221019"
+
+Test 788 (d_size_l_pos_ref_sp) : FAILED.
+    First line of code: {return test("% ld", l_pos_1);}
+      expected output : " 22337203685477"
+      your output     : " -921221019"
+      expected (nonprintable as hex) : " 22337203685477"
+      actual   (nonprintable as hex) : " -921221019"
+
+Test 789 (d_size_l_neg_ref_sp) : FAILED.
+    First line of code: {return test("% ld", l_neg_1);}
+      expected output : "-22337203685477"
+      your output     : "--921221019"
+      expected (nonprintable as hex) : "-22337203685477"
+      actual   (nonprintable as hex) : "--921221019"
+
+Test 790 (d_size_ll_pos_ref_sp) : FAILED.
+    First line of code: {return test("% lld", ll_pos_1);}
+      expected output : " 22337203685477"
+      your output     : " -921221019"
+      expected (nonprintable as hex) : " 22337203685477"
+      actual   (nonprintable as hex) : " -921221019"
+
+Test 791 (d_size_ll_neg_ref_sp) : FAILED.
+    First line of code: {return test("% lld", ll_neg_1);}
+      expected output : "-22337203685477"
+      your output     : "--921221019"
+      expected (nonprintable as hex) : "-22337203685477"
+      actual   (nonprintable as hex) : "--921221019"
+
+Test 792 (d_size_l_pos_big_sp) : FAILED.
+    First line of code: {return test("% ld", 22337203685477l);}
+      expected output : " 22337203685477"
+      your output     : " -921221019"
+      expected (nonprintable as hex) : " 22337203685477"
+      actual   (nonprintable as hex) : " -921221019"
+
+Test 793 (d_size_l_neg_big_sp) : FAILED.
+    First line of code: {return test("% ld", -22337203685477l);}
+      expected output : "-22337203685477"
+      your output     : "--921221019"
+      expected (nonprintable as hex) : "-22337203685477"
+      actual   (nonprintable as hex) : "--921221019"
+
+Test 794 (d_size_ll_pos_big_sp) : FAILED.
+    First line of code: {return test("% lld", 522337203685470ll);}
+      expected output : " 522337203685470"
+      your output     : " 461015134"
+      expected (nonprintable as hex) : " 522337203685470"
+      actual   (nonprintable as hex) : " 461015134"
+
+Test 795 (d_size_ll_neg_big_sp) : FAILED.
+    First line of code: {return test("% lld", -522337203685470ll);}
+      expected output : "-522337203685470"
+      your output     : "-461015134"
+      expected (nonprintable as hex) : "-522337203685470"
+      actual   (nonprintable as hex) : "-461015134"
+
+Test 796 (d_llmax_sp) : FAILED.
+    First line of code: {return test("% lld", 9223372036854775807ll);}
+      expected output : " 9223372036854775807"
+      your output     : " -1"
+      expected (nonprintable as hex) : " 9223372036854775807"
+      actual   (nonprintable as hex) : " -1"
+
+Test 797 (d_llmin_sp) : FAILED.
+    First line of code: {return test("% lld", llmin);}
+      expected output : "-9223372036854775807"
+      your output     : "--1"
+      expected (nonprintable as hex) : "-9223372036854775807"
+      actual   (nonprintable as hex) : "--1"
+
+Test 798 (d_lmax_sp) : FAILED.
+    First line of code: {return test("% ld", 9223372036854775807l);}
+      expected output : " 9223372036854775807"
+      your output     : " -1"
+      expected (nonprintable as hex) : " 9223372036854775807"
+      actual   (nonprintable as hex) : " -1"
+
+Test 799 (d_lmin_sp) : FAILED.
+    First line of code: {return test("% ld", lmin);}
+      expected output : "-9223372036854775807"
+      your output     : "--1"
+      expected (nonprintable as hex) : "-9223372036854775807"
+      actual   (nonprintable as hex) : "--1"
+
+Test 804 (d_prec0val0_basic) : FAILED.
+    First line of code: {return test("%.0d", 0);}
+      expected output : ""
+      your output     : "0"
+      expected (nonprintable as hex) : ""
+      actual   (nonprintable as hex) : "0"
+
+Test 805 (d_prec0val0_implicit) : FAILED.
+    First line of code: {return test("%.d", 0);}
+      expected output : ""
+      your output     : "0"
+      expected (nonprintable as hex) : ""
+      actual   (nonprintable as hex) : "0"
+
+Test 806 (d_prec0val0_w) : FAILED.
+    First line of code: {return test("%5.0d", 0);}
+      expected output : "     "
+      your output     : "    0"
+      expected (nonprintable as hex) : "     "
+      actual   (nonprintable as hex) : "    0"
+
+Test 807 (d_prec0val0_w_impl) : FAILED.
+    First line of code: {return test("%5.d", 0);}
+      expected output : "     "
+      your output     : "    0"
+      expected (nonprintable as hex) : "     "
+      actual   (nonprintable as hex) : "    0"
+
+Test 808 (d_prec0val0_wlj) : FAILED.
+    First line of code: {return test("%-5.0d", 0);}
+      expected output : "     "
+      your output     : "0    "
+      expected (nonprintable as hex) : "     "
+      actual   (nonprintable as hex) : "0    "
+
+Test 809 (d_prec0val0_wlj_impl) : FAILED.
+    First line of code: {return test("%-5.d", 0);}
+      expected output : "     "
+      your output     : "0    "
+      expected (nonprintable as hex) : "     "
+      actual   (nonprintable as hex) : "0    "
+
+Test 810 (d_prec0val0_as) : FAILED.
+    First line of code: {return test("%+.0d", 0);}
+      expected output : "+"
+      your output     : "+0"
+      expected (nonprintable as hex) : "+"
+      actual   (nonprintable as hex) : "+0"
+
+Test 811 (d_prec0val0_as_impl) : FAILED.
+    First line of code: {return test("%+.d", 0);}
+      expected output : "+"
+      your output     : "+0"
+      expected (nonprintable as hex) : "+"
+      actual   (nonprintable as hex) : "+0"
+
+Test 812 (d_prec0val0_was) : FAILED.
+    First line of code: {return test("%+5.0d", 0);}
+      expected output : "    +"
+      your output     : "   +0"
+      expected (nonprintable as hex) : "    +"
+      actual   (nonprintable as hex) : "   +0"
+
+Test 813 (d_prec0val0_was_impl) : FAILED.
+    First line of code: {return test("%+5.d", 0);}
+      expected output : "    +"
+      your output     : "   +0"
+      expected (nonprintable as hex) : "    +"
+      actual   (nonprintable as hex) : "   +0"
+
+Test 814 (d_prec0val0_waslj) : FAILED.
+    First line of code: {return test("%+-5.0d", 0);}
+      expected output : "+    "
+      your output     : "+0   "
+      expected (nonprintable as hex) : "+    "
+      actual   (nonprintable as hex) : "+0   "
+
+Test 815 (d_prec0val0_waslj_impl) : FAILED.
+    First line of code: {return test("%+-5.d", 0);}
+      expected output : "+    "
+      your output     : "+0   "
+      expected (nonprintable as hex) : "+    "
+      actual   (nonprintable as hex) : "+0   "
+

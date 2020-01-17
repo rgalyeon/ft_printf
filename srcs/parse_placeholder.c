@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/16 18:29:23 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/17 18:00:29 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,20 +158,30 @@ static void	parse_length(t_ph *placeholder, char **format)
 
 static void parse_type(t_ph *placeholder, char **format)
 {
-	const char			curr_char = **format;
-	register u_int8_t	i;
-
-	i = 0;
-	while (i < N_TYPES)
-	{
-		if (curr_char == TYPE[i++])
-			placeholder->type = curr_char;
-	}
+//	const char			curr_char = **format;
+//	register u_int8_t	i;
+//	t_bool				known_type;
+//
+//	i = 0;
+//	known_type = FALSE;
+//	while (i < N_TYPES)
+//	{
+//		if (curr_char == TYPE[i++])
+//		{
+//			placeholder->type = curr_char;
+//			known_type = TRUE;
+//		}
+//	}
+//	if (known_type == FALSE)
+//		placeholder->type = curr_char;
+	placeholder->type = **format;
+	(*format)++;
 }
 
 char		*parse_placeholder(char **format, int *size, va_list arg_ptr)
 {
 	t_ph *placeholder;
+	char *processed_string;
 
 	if (!(placeholder = (t_ph *)ft_memalloc(sizeof(t_ph))))
 		exit(MALLOC_ERR);
@@ -180,7 +190,7 @@ char		*parse_placeholder(char **format, int *size, va_list arg_ptr)
 	placeholder->precision = parse_precision(placeholder, format, arg_ptr);
 	parse_length(placeholder, format);
 	parse_type(placeholder, format);
-	print_placeholder(placeholder); //TODO delete
-	processing_types(placeholder, arg_ptr);
-	return (NULL);
+//	print_placeholder(placeholder); //TODO delete
+	processed_string = processing_types(placeholder, arg_ptr);
+	return (processed_string);
 }

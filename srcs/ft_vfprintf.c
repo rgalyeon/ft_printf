@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:53:31 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/15 15:21:32 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/17 18:00:58 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_vec *parse_format(int *size_ptr, char *format, va_list arg_ptr)
 		{
 			++format;
 			placeholder_string = parse_placeholder(&format, size_ptr, arg_ptr);
-//			ft_vec_string_push(&output_string, placeholder_string);
+			ft_vec_string_push(&output_string, placeholder_string);
 		}
 		else
 		{
@@ -35,6 +35,7 @@ t_vec *parse_format(int *size_ptr, char *format, va_list arg_ptr)
 			++format;
 		}
 	}
+//	printf("str = %s\n", output_string->data);
 	return (output_string);
 }
 
@@ -45,8 +46,8 @@ int 	ft_vfprintf(int fd, const char *format, va_list arg_ptr)
 
 	output_size = 0;
 	output_string = parse_format(&output_size, (char *)format, arg_ptr);
-//	if (output_size != -1)
-//		write(fd, output_string->data, output_size);
+	if (output_size != -1)
+		write(fd, output_string->data, output_string->total);
 	return (output_size);
 }
 

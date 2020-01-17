@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 18:42:05 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/16 23:46:46 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/17 22:35:01 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,17 @@ int main()
 	printf("%#10.10d$\n", 3000);
 	printf("%-11.0d$\n", 3000);
 	printf("%llu\n", (unsigned long long)(0-242));
-	printf("% -01.2d$\n", -60);
-	printf("% +-#0.10d$\n", -605555);
-	printf("% +-#12.7d$\n", -605555); ///full size = 13; 0 = 1; padd 4;
+	printf("% 01.2d$\n", -60);
+	printf("% +#0.10d$\n", -605555);
+	printf("len = %d\n", printf("% +-#5.2d$\n", -6055) - 2);
+	printf("%010d$\n", 0);
+//	printf("%zu\n", sizeof(void *));
+//	printf("%zu\n", sizeof(uintptr_t));
+//	printf("%zu\n", sizeof(unsigned long));
+//	printf("%zu\n", sizeof(long));
+//	printf("%zu\n", sizeof(long long));
+
+
+
+	///full size =  5; 0 = 0; padd 0;
 }

@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 17:57:46 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/16 18:53:25 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/17 18:22:27 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 
 
 
-char *processing_o(t_ph *placeholder, va_list arg_ptr)
-{
-	return NULL;
-}
 
-char *processing_u(t_ph *placeholder, va_list arg_ptr)
-{
-	return NULL;
-}
+
+
 
 char *processing_x(t_ph *placeholder, va_list arg_ptr)
 {
@@ -64,5 +58,6 @@ char	*processing_types(t_ph *placeholder, va_list arg_ptr)
 	}
 	if (was_processed == FALSE)
 		processed_string = PROCESSING_TYPE(CHAR, placeholder, arg_ptr);
+	//TODO подумать про неизвестный тип
 	return (processed_string);
 }

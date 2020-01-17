@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:10:03 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/16 18:53:25 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/17 17:25:31 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,15 @@ typedef char *(*t_ptr)(t_ph *placeholder, va_list arg_ptr);
 # define _PROCESSING_TYPE(i) {_DI, _DI, _O, _U, _X, _X, _C, _STR, _P}[i]
 # define PROCESSING_TYPE(i, ph, va) (t_ptr[9])_PROCESSING_TYPE(i)(ph, va)
 
+/**
+** Parameters for alignment
+*/
+
+# define FULL_SIZE	align_params[0]
+# define ZERO_COUNT	align_params[1]
+# define PADDING	align_params[2]
+
+
 
 int				ft_printf(const char *format, ...);
 int				ft_vfprintf(int fd, const char *format, va_list arg_ptr);
@@ -103,6 +112,20 @@ char			*processing_types(t_ph *placeholder, va_list arg_ptr);
 */
 
 char			*processing_di(t_ph *placeholder, va_list arg_ptr);
+char			*processing_u(t_ph *placeholder, va_list arg_ptr);
+char			*processing_x(t_ph *placeholder, va_list arg_ptr);
+char			*processing_o(t_ph *placeholder, va_list arg_ptr);
+char			*processing_c(t_ph *placeholder, va_list arg_ptr);
+char			*processing_s(t_ph *placeholder, va_list arg_ptr);
+char			*processing_p(t_ph *placeholder, va_list arg_ptr);
+
+/**
+** Utils for project
+*/
+
+__int128		max3(__int128 a, __int128 b, __int128 c);
+int				max2(int a, int b);
+int				ft_uint_len(__int128 nb);
 
 /**
 ** Utils for development
