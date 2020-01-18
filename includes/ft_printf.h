@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:10:03 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/17 17:25:31 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/18 12:35:56 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_flag
 # define TYPE		"diouxXcsp"
 # define N_TYPES	9
 
-typedef char *(*t_ptr)(t_ph *placeholder, va_list arg_ptr);
+typedef char *(*t_ptr)(t_vec **vec, t_ph *placeholder, va_list arg_ptr);
 
 # define _DI processing_di
 # define _O processing_o
@@ -90,7 +90,7 @@ typedef char *(*t_ptr)(t_ph *placeholder, va_list arg_ptr);
 # define CHAR 6
 
 # define _PROCESSING_TYPE(i) {_DI, _DI, _O, _U, _X, _X, _C, _STR, _P}[i]
-# define PROCESSING_TYPE(i, ph, va) (t_ptr[9])_PROCESSING_TYPE(i)(ph, va)
+# define PROCESSING_TYPE(i, v, ph, va) (t_ptr[9])_PROCESSING_TYPE(i)(v, ph, va)
 
 /**
 ** Parameters for alignment
@@ -104,27 +104,29 @@ typedef char *(*t_ptr)(t_ph *placeholder, va_list arg_ptr);
 
 int				ft_printf(const char *format, ...);
 int				ft_vfprintf(int fd, const char *format, va_list arg_ptr);
-char			*parse_placeholder(char **format, int *size, va_list arg_ptr);
-char			*processing_types(t_ph *placeholder, va_list arg_ptr);
+void			parse_placeholder(t_vec **vec, char **format, int *size,
+		va_list arg_ptr);
+void			processing_types(t_vec **vec, t_ph *placeholder, va_list
+arg_ptr);
 
 /**
 ** Types processing functions
 */
 
-char			*processing_di(t_ph *placeholder, va_list arg_ptr);
-char			*processing_u(t_ph *placeholder, va_list arg_ptr);
-char			*processing_x(t_ph *placeholder, va_list arg_ptr);
-char			*processing_o(t_ph *placeholder, va_list arg_ptr);
-char			*processing_c(t_ph *placeholder, va_list arg_ptr);
-char			*processing_s(t_ph *placeholder, va_list arg_ptr);
-char			*processing_p(t_ph *placeholder, va_list arg_ptr);
+char			*processing_di(t_vec **vec, t_ph *placeholder, va_list arg_ptr);
+char			*processing_u(t_vec **vec, t_ph *placeholder, va_list arg_ptr);
+char			*processing_x(t_vec **vec, t_ph *placeholder, va_list arg_ptr);
+char			*processing_o(t_vec **vec, t_ph *placeholder, va_list arg_ptr);
+char			*processing_c(t_vec **vec, t_ph *placeholder, va_list arg_ptr);
+char			*processing_s(t_vec **vec, t_ph *placeholder, va_list arg_ptr);
+char			*processing_p(t_vec **vec, t_ph *placeholder, va_list arg_ptr);
 
 /**
 ** Utils for project
 */
 
 __int128		max3(__int128 a, __int128 b, __int128 c);
-int				max2(int a, int b);
+__int128		max2(__int128 a, __int128 b);
 int				ft_uint_len(__int128 nb);
 
 /**

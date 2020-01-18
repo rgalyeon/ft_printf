@@ -26,8 +26,8 @@ t_vec *parse_format(int *size_ptr, char *format, va_list arg_ptr)
 		if (*format == '%')
 		{
 			++format;
-			placeholder_string = parse_placeholder(&format, size_ptr, arg_ptr);
-			ft_vec_string_push(&output_string, placeholder_string);
+			parse_placeholder(&output_string, &format, size_ptr, arg_ptr);
+//			ft_vec_string_push(&output_string, placeholder_string);
 		}
 		else
 		{

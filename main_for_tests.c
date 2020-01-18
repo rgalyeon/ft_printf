@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 18:42:05 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/17 22:35:01 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/18 14:19:09 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ int main()
 //	printf("%zu\n", sizeof(long));
 //	printf("%zu\n", sizeof(long long));
 
-
+	printf("%s top$\n", "hello");
+	printf("%0c top$\n", -158);
 
 	///full size =  5; 0 = 0; padd 0;
 }

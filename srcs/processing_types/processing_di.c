@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 21:12:20 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/17 22:58:05 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/18 16:30:33 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,52 +57,44 @@ static void	get_alignment_params(int align_params[3], t_ph *placeholder,
 	len = ft_uint_len(value);
 	if (!(value) && (placeholder->precision >= 0))
 		len = 0;
-	FULL_SIZE = (int)max3(placeholder->width,
-			placeholder->precision + has_sign,
-			len + has_sign);
 	ZERO_COUNT = (int)placeholder->precision - len;
 	PADDING = (int)placeholder->width -
 				(max2(placeholder->precision, len) + has_sign);
 }
 
-static void	fill_string(char *str, t_ph *placeholder, int *align_params,
+static void	fill_string(t_vec **vec, t_ph *placeholder, int *align_params,
 		__int128 value)
 {
-	int 		idx;
 	char		*ascii_value;
 
 	if (!(ascii_value = ft_itoa(value < 0 ? -value : value)))
 		exit(MALLOC_ERR);
-	idx = 0;
 	if (!(placeholder->flag & MINUS.code) && !(placeholder->flag & ZERO.code))
 		while (PADDING > 0 && PADDING--)
-			str[idx++] = ' ';
+			ft_vec_push(vec, ' ');
 	if (value < 0)
-		str[idx++] = '-';
+		ft_vec_push(vec, '-');
 	else if (placeholder->flag & PLUS.code || placeholder->flag & SPACE.code)
-		str[idx++] = placeholder->flag & PLUS.code ? PLUS.symbol : SPACE.symbol;
+		ft_vec_push(vec, placeholder->flag & PLUS.code ? PLUS.symbol :
+																SPACE.symbol);
 	if (placeholder->flag & ZERO.code) //TODO объединить if'ы
 		ZERO_COUNT = ZERO_COUNT < 0 ? PADDING : ZERO_COUNT + PADDING;
 	if (placeholder->flag & ZERO.code)
 		PADDING = 0;
 	while (ZERO_COUNT > 0 && ZERO_COUNT--)
-		str[idx++] = '0';
-
-	ascii_value = (!(value) && (placeholder->precision >= 0)) ? "" :
-			ascii_value; //TODO NEED FIX
-	ft_strcpy(&str[idx], ascii_value);
-	idx += ft_strlen(ascii_value);
+		ft_vec_push(vec, '0');
+	ft_vec_string_push(vec,
+			(!(value) && (placeholder->precision >= 0)) ? "" : ascii_value);
 	while (PADDING > 0 && PADDING--)
-		str[idx++] = ' ';
-//	free(ascii_value);
+		ft_vec_push(vec, ' ');
+	free(ascii_value);
 }
 
-char		*processing_di(t_ph *placeholder, va_list arg_ptr)
+char		*processing_di(t_vec **vec, t_ph *placeholder, va_list arg_ptr)
 {
 	__int128	value;
 	int 		align_params[3];
 	t_bool		has_sign;
-	char 		*processed_string;
 
 	ft_memset(align_params, 0, sizeof(align_params));
 	value = get_value_from_va_stack(placeholder->length, arg_ptr);
@@ -111,8 +103,6 @@ char		*processing_di(t_ph *placeholder, va_list arg_ptr)
 			(placeholder->flag & SPACE.code));
 	get_alignment_params(align_params, placeholder, value,
 			has_sign);
-	if (!(processed_string = ft_memalloc(FULL_SIZE + 1)))
-		exit(MALLOC_ERR);
-	fill_string(processed_string, placeholder, (int *)align_params, value);
-	return (processed_string);
+	fill_string(vec, placeholder, (int *)align_params, value);
+	return (NULL);
 }

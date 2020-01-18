@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 14:50:12 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/17 22:20:25 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/18 15:46:05 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,32 @@ int main()
 
 	ft_printf("%-8.5d$\n", 0);
 	printf("%-8.5d$\n\n", 0);
+
+	ft_printf("hello, %s$\n", "gavin");
+	printf("hello, %s$\n\n", "gavin");
+
+	ft_printf("hello, %.2s$\n", "gavin");
+	printf("hello, %.2s$\n\n", "gavin");
+
+	ft_printf("%.09s$\n", NULL);
+	printf("%.09s$\n\n", NULL);
+
+	ft_printf("hello, %04s$\n", "ga");
+	printf("hello, %04s$\n\n", "ga");
+
+	ft_printf("%c top$\n", 1);
+	printf("%c top$\n\n", 1);
+
+	ft_printf("%-5c top$\n", 'd');
+	printf("%-5c top$\n\n", 'd');
+
+	ft_printf("%-5c top$\n", 0);
+	printf("%-5c top$\n\n", 0);
+	char str[] = "string";
+
+	printf("size: %zu\n", sizeof(str));
+
+//	printf("%d\n", ft_atoi("09"));
 //	printf("%2.*3**d\n", 10, -15, 2, -24242);
 //	printf("%lld\n", UINT64_MAX);
 //	printf("%zu\n", sizeof(__int128_t));

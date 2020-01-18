@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/17 18:00:29 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/18 13:27:43 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,12 @@ static int	parse_precision(t_ph *placeholder, char **format, va_list arg_ptr)
 	if (ft_isdigit(**format))
 	{
 		precision = ft_atoi(*format);
-		*format += ft_int_len(precision);
+		while (ft_isdigit(**format))
+			(*format)++;
 	}
 	else if (**format == '*')
 	{
-		precision = va_arg(arg_ptr, int);
-		if (precision < 0)
+		if ((precision = va_arg(arg_ptr, int)) < 0)
 		{
 			placeholder->width = (unsigned int)precision * -1;
 			placeholder->flag |= MINUS.code;
@@ -178,7 +178,8 @@ static void parse_type(t_ph *placeholder, char **format)
 	(*format)++;
 }
 
-char		*parse_placeholder(char **format, int *size, va_list arg_ptr)
+void		parse_placeholder(t_vec **vec, char **format, int *size, va_list
+																		arg_ptr)
 {
 	t_ph *placeholder;
 	char *processed_string;
@@ -191,6 +192,6 @@ char		*parse_placeholder(char **format, int *size, va_list arg_ptr)
 	parse_length(placeholder, format);
 	parse_type(placeholder, format);
 //	print_placeholder(placeholder); //TODO delete
-	processed_string = processing_types(placeholder, arg_ptr);
-	return (processed_string);
+	processing_types(vec, placeholder, arg_ptr);
+//	return (processed_string);
 }

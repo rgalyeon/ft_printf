@@ -7,5 +7,5 @@ include_directories(includes)
 include_directories(libft/includes)
 aux_source_directory(srcs/ src)
 
-add_executable(ft_printf ${src} main.c srcs/debug_utils.c srcs/processing_types.c srcs/processing_types/processing_di.c srcs/utils.c srcs/processing_types/processing_o.c srcs/processing_types/processing_u.c)
+add_executable(ft_printf ${src} main.c srcs/debug_utils.c srcs/processing_types.c srcs/processing_types/processing_di.c srcs/utils.c srcs/processing_types/processing_o.c srcs/processing_types/processing_u.c srcs/processing_types/processing_s.c srcs/processing_types/processing_c.c)
 target_link_libraries(ft_printf ${PROJECT_SOURCE_DIR}/libft/libft.a)
