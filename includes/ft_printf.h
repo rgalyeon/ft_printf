@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:10:03 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/18 12:35:56 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/18 16:52:54 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ char			*processing_p(t_vec **vec, t_ph *placeholder, va_list arg_ptr);
 __int128		max3(__int128 a, __int128 b, __int128 c);
 __int128		max2(__int128 a, __int128 b);
 int				ft_uint_len(__int128 nb);
+char			*itoa_base(__int128 val, int base);
 
 /**
 ** Utils for development

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processing_di.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 21:12:20 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/18 16:30:33 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/18 16:59:49 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	fill_string(t_vec **vec, t_ph *placeholder, int *align_params,
 {
 	char		*ascii_value;
 
-	if (!(ascii_value = ft_itoa(value < 0 ? -value : value)))
+	if (!(ascii_value = itoa_base(value < 0 ? -value : value, 10)))
 		exit(MALLOC_ERR);
 	if (!(placeholder->flag & MINUS.code) && !(placeholder->flag & ZERO.code))
 		while (PADDING > 0 && PADDING--)

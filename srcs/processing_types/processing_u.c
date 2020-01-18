@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processing_u.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/17 18:29:34 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/18 16:18:21 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/18 17:14:42 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	fill_string(t_vec **vec, t_ph *placeholder, int *align_params,
 {
 	char		*ascii_value;
 
-	if (!(ascii_value = ft_itoa(value)))
+	if (!(ascii_value = itoa_base(value, 10)))
 		exit(MALLOC_ERR);
 	if (!(placeholder->flag & MINUS.code) && !(placeholder->flag & ZERO.code))
 		while (PADDING > 0 && PADDING--)
@@ -74,12 +74,11 @@ static void	fill_string(t_vec **vec, t_ph *placeholder, int *align_params,
 		PADDING = 0;
 	while (ZERO_COUNT > 0 && ZERO_COUNT--)
 		ft_vec_push(vec, '0');
-	ascii_value = (!(value) && (placeholder->precision >= 0)) ? "" :
-				  ascii_value; //TODO NEED FIX
-	ft_vec_string_push(vec, ascii_value);
+	ft_vec_string_push(vec, !value && placeholder->precision >= 0 ? "" :
+	ascii_value);
 	while (PADDING > 0 && PADDING--)
 		ft_vec_push(vec, ' ');
-//	free(ascii_value);
+	free(ascii_value);
 }
 
 char				*processing_u(t_vec **vec, t_ph *placeholder, va_list
