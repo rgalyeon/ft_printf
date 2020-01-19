@@ -67,7 +67,7 @@ static void	fill_string(t_vec **vec, t_ph *placeholder, int *align_params,
 {
 	char		*ascii_value;
 
-	if (!(ascii_value = itoa_base(value < 0 ? -value : value, 10)))
+	if (!(ascii_value = ft_itoa_base(value < 0 ? -value : value, 10)))
 		exit(MALLOC_ERR);
 	if (!(placeholder->flag & MINUS.code) && !(placeholder->flag & ZERO.code))
 		while (PADDING > 0 && PADDING--)

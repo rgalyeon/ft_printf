@@ -42,7 +42,7 @@ static void	fill_string(t_vec **vec, t_ph *placeholder,
 			ft_vec_push(vec, ' ');
 }
 
-static void override_placeholder(t_ph *placeholder)
+static void	override_placeholder(t_ph *placeholder)
 {
 	placeholder->width = placeholder->width == -1 ? 0 : placeholder->width;
 	if (placeholder->flag & MINUS.code)

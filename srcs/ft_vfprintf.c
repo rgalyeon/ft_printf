@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:53:31 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/17 18:00:58 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/19 17:41:48 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 t_vec *parse_format(int *size_ptr, char *format, va_list arg_ptr)
 {
 	t_vec *output_string;
-	char *placeholder_string;
 
 	if (!(output_string = ft_vec_init(16)))
 		exit(MALLOC_ERR);
@@ -26,8 +25,13 @@ t_vec *parse_format(int *size_ptr, char *format, va_list arg_ptr)
 		if (*format == '%')
 		{
 			++format;
-			parse_placeholder(&output_string, &format, size_ptr, arg_ptr);
-//			ft_vec_string_push(&output_string, placeholder_string);
+			if (*format == '%')
+			{
+				ft_vec_push(&output_string, '%');
+				++format;
+			}
+			else
+				parse_placeholder(&output_string, &format, size_ptr, arg_ptr);
 		}
 		else
 		{
