@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   itoa_base.c                                        :+:      :+:    :+:   */
+/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/18 16:03:59 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/18 16:49:44 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/19 18:01:00 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*itoa_base(__int128 val, int base)
+char	*ft_itoa_base(__int128 val, int base)
 {
 	char		*num_str;
 	int			len;
 	__int128	num;
 	char		digit;
 
-	len = val <= 0 && base == 10 ? 1 : 0;
+	len = val <= 0 ? 1 : 0;
 	num = val;
 	while (num)
 	{

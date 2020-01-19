@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/18 13:27:43 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/19 22:18:40 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ static int	parse_precision(t_ph *placeholder, char **format, va_list arg_ptr)
  * @param placeholder
  * @param format
  */
+
 static void	parse_length(t_ph *placeholder, char **format)
 {
 	int			i;
@@ -158,31 +159,14 @@ static void	parse_length(t_ph *placeholder, char **format)
 
 static void parse_type(t_ph *placeholder, char **format)
 {
-//	const char			curr_char = **format;
-//	register u_int8_t	i;
-//	t_bool				known_type;
-//
-//	i = 0;
-//	known_type = FALSE;
-//	while (i < N_TYPES)
-//	{
-//		if (curr_char == TYPE[i++])
-//		{
-//			placeholder->type = curr_char;
-//			known_type = TRUE;
-//		}
-//	}
-//	if (known_type == FALSE)
-//		placeholder->type = curr_char;
 	placeholder->type = **format;
-	(*format)++;
+	(*format) += **format == 0 ? 0 : 1;
 }
 
 void		parse_placeholder(t_vec **vec, char **format, int *size, va_list
 																		arg_ptr)
 {
 	t_ph *placeholder;
-	char *processed_string;
 
 	if (!(placeholder = (t_ph *)ft_memalloc(sizeof(t_ph))))
 		exit(MALLOC_ERR);
@@ -191,7 +175,5 @@ void		parse_placeholder(t_vec **vec, char **format, int *size, va_list
 	placeholder->precision = parse_precision(placeholder, format, arg_ptr);
 	parse_length(placeholder, format);
 	parse_type(placeholder, format);
-//	print_placeholder(placeholder); //TODO delete
 	processing_types(vec, placeholder, arg_ptr);
-//	return (processed_string);
 }

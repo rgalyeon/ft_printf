@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/18 13:32:32 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/18 16:16:50 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/19 22:00:20 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,13 @@ static void	override_placeholder(t_ph *placeholder)
 		placeholder->flag &= ~ZERO.code;
 }
 
-char	*processing_c(t_vec **vec, t_ph *placeholder, va_list arg_ptr)
+char		*processing_c(t_vec **vec, t_ph *placeholder, va_list arg_ptr)
 {
-	char			row_char = (char)va_arg(arg_ptr, int);
-	int 			align_params[3];
+	char	row_char;
+	int		align_params[3];
 
+	row_char = (placeholder->type == 'c') ? (char)va_arg(arg_ptr, int) :
+														(char)placeholder->type;
 	ft_memset(align_params, 0, sizeof(align_params));
 	override_placeholder(placeholder);
 	get_alignment_params(align_params, placeholder);
