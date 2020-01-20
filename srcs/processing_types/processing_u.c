@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/17 18:29:34 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/19 14:24:42 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/20 19:52:55 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static __uint128_t	get_value_from_va_stack(u_int8_t length, va_list arg_ptr)
 	return (value);
 }
 
-/**
+/*
 ** Function disable conflicting placeholder's parameters for u type
 ** Flag 0 ignored if precision or flag '-' given
 ** ' ', '+' doesn't work with unsigned conversion
@@ -45,8 +45,8 @@ static void			override_placeholder(t_ph *placeholder, __uint128_t value)
 	placeholder->flag &= ~(PLUS.code | SPACE.code);
 }
 
-static void	get_alignment_params(int align_params[3], t_ph *placeholder,
-		__uint128_t value)
+static void			get_alignment_params(int align_params[3], t_ph *placeholder,
+															__uint128_t value)
 {
 	int len;
 
@@ -57,40 +57,40 @@ static void	get_alignment_params(int align_params[3], t_ph *placeholder,
 	PADDING = (int)(placeholder->width - (max2(placeholder->precision, len)));
 }
 
-static void	fill_string(t_vec **vec, t_ph *placeholder, int *align_params,
-		__uint128_t value)
+static void			fill_string(t_vec **vec, t_ph *placeholder,
+										int *align_params, __uint128_t value)
 {
 	char		*ascii_value;
 
 	if (!(ascii_value = ft_itoa_base(value, 10)))
-		exit(MALLOC_ERR);
+		return ;
 	if (!(placeholder->flag & MINUS.code) && !(placeholder->flag & ZERO.code))
 		while (PADDING > 0 && PADDING--)
-			ft_vec_push(vec, ' ');
-	if (placeholder->flag & ZERO.code) //TODO объединить if'ы
-		ZERO_COUNT = ZERO_COUNT < 0 ? PADDING : ZERO_COUNT + PADDING;
+			*vec = ft_vec_push(vec, ' ');
 	if (placeholder->flag & ZERO.code)
+	{
+		ZERO_COUNT = ZERO_COUNT < 0 ? PADDING : ZERO_COUNT + PADDING;
 		PADDING = 0;
+	}
 	while (ZERO_COUNT > 0 && ZERO_COUNT--)
-		ft_vec_push(vec, '0');
+		*vec = ft_vec_push(vec, '0');
 	ft_vec_string_push(vec, !value && placeholder->precision >= 0 ? "" :
 	ascii_value);
 	while (PADDING > 0 && PADDING--)
-		ft_vec_push(vec, ' ');
+		*vec = ft_vec_push(vec, ' ');
 	free(ascii_value);
 }
 
-char				*processing_u(t_vec **vec, t_ph *placeholder, va_list
-arg_ptr)
+char				*processing_u(t_vec **vec, t_ph *placeholder,
+															va_list arg_ptr)
 {
 	__uint128_t	value;
-	int 		align_params[3];
+	int			align_params[3];
 
 	ft_memset(align_params, 0, sizeof(align_params));
 	value = get_value_from_va_stack(placeholder->length, arg_ptr);
 	override_placeholder(placeholder, value);
 	get_alignment_params(align_params, placeholder, value);
 	fill_string(vec, placeholder, align_params, value);
-
 	return (NULL);
 }

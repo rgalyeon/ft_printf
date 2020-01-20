@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processing_di.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 21:12:20 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/18 16:59:49 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/20 19:49:24 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ static __int128	get_value_from_va_stack(u_int8_t length, va_list arg_ptr)
 		value = (char)va_arg(arg_ptr, int);
 	else
 		value = va_arg(arg_ptr, int);
-	return value;
+	return (value);
 }
 
-/**
+/*
 ** Function disable conflicting placeholder's parameters for d, i types
 ** Flag 0 ignored if precision or flag '-' given
 ** If value is negative, ' ' and '+' flags ignored
@@ -38,7 +38,7 @@ static __int128	get_value_from_va_stack(u_int8_t length, va_list arg_ptr)
 ** @param value
 */
 
-static void override_placeholder(t_ph *placeholder, __int128 value)
+static void		override_placeholder(t_ph *placeholder, __int128 value)
 {
 	placeholder->width = placeholder->width == -1 ? 0 : placeholder->width;
 	if (placeholder->precision != -1 || (placeholder->flag & MINUS.code))
@@ -49,7 +49,7 @@ static void override_placeholder(t_ph *placeholder, __int128 value)
 		placeholder->flag &= ~SPACE.code;
 }
 
-static void	get_alignment_params(int align_params[3], t_ph *placeholder,
+static void		get_alignment_params(int align_params[3], t_ph *placeholder,
 												__int128 value, t_bool has_sign)
 {
 	int len;
@@ -62,38 +62,39 @@ static void	get_alignment_params(int align_params[3], t_ph *placeholder,
 				(max2(placeholder->precision, len) + has_sign);
 }
 
-static void	fill_string(t_vec **vec, t_ph *placeholder, int *align_params,
+static void		fill_string(t_vec **vec, t_ph *placeholder, int *align_params,
 		__int128 value)
 {
 	char		*ascii_value;
 
 	if (!(ascii_value = ft_itoa_base(value < 0 ? -value : value, 10)))
-		exit(MALLOC_ERR);
+		return ;
 	if (!(placeholder->flag & MINUS.code) && !(placeholder->flag & ZERO.code))
 		while (PADDING > 0 && PADDING--)
-			ft_vec_push(vec, ' ');
+			*vec = ft_vec_push(vec, ' ');
 	if (value < 0)
-		ft_vec_push(vec, '-');
+		*vec = ft_vec_push(vec, '-');
 	else if (placeholder->flag & PLUS.code || placeholder->flag & SPACE.code)
-		ft_vec_push(vec, placeholder->flag & PLUS.code ? PLUS.symbol :
+		*vec = ft_vec_push(vec, placeholder->flag & PLUS.code ? PLUS.symbol :
 																SPACE.symbol);
-	if (placeholder->flag & ZERO.code) //TODO объединить if'ы
-		ZERO_COUNT = ZERO_COUNT < 0 ? PADDING : ZERO_COUNT + PADDING;
 	if (placeholder->flag & ZERO.code)
+	{
+		ZERO_COUNT = ZERO_COUNT < 0 ? PADDING : ZERO_COUNT + PADDING;
 		PADDING = 0;
+	}
 	while (ZERO_COUNT > 0 && ZERO_COUNT--)
-		ft_vec_push(vec, '0');
-	ft_vec_string_push(vec,
+		*vec = ft_vec_push(vec, '0');
+	*vec = ft_vec_string_push(vec,
 			(!(value) && (placeholder->precision >= 0)) ? "" : ascii_value);
 	while (PADDING > 0 && PADDING--)
-		ft_vec_push(vec, ' ');
+		*vec = ft_vec_push(vec, ' ');
 	free(ascii_value);
 }
 
-char		*processing_di(t_vec **vec, t_ph *placeholder, va_list arg_ptr)
+char			*processing_di(t_vec **vec, t_ph *placeholder, va_list arg_ptr)
 {
 	__int128	value;
-	int 		align_params[3];
+	int			align_params[3];
 	t_bool		has_sign;
 
 	ft_memset(align_params, 0, sizeof(align_params));

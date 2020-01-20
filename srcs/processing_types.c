@@ -12,8 +12,6 @@
 
 #include "ft_printf.h"
 
-
-
 void	processing_types(t_vec **vec, t_ph *placeholder, va_list arg_ptr)
 {
 	const u_int8_t		type = placeholder->type;

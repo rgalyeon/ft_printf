@@ -28,11 +28,11 @@ static void	fill_string(t_vec **vec, t_ph *placeholder,
 
 	if (!has_left_padding)
 		while (PADDING > 0 && PADDING--)
-			ft_vec_push(vec, fill_char);
-	ft_vec_push(vec, row_char);
+			*vec = ft_vec_push(vec, fill_char);
+	*vec = ft_vec_push(vec, row_char);
 	if (has_left_padding)
 		while (PADDING > 0 && PADDING--)
-			ft_vec_push(vec, ' ');
+			*vec = ft_vec_push(vec, ' ');
 }
 
 static void	override_placeholder(t_ph *placeholder)

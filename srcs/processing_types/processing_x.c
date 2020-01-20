@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 14:10:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/19 21:22:03 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/20 19:54:41 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static __uint128_t	get_value_from_va_stack(u_int8_t length, va_list arg_ptr)
 	return (value);
 }
 
-/**
+/*
 ** Function disable conflicting placeholder's parameters for u type
 ** Flag 0 ignored if precision or flag '-' given
 ** ' ', '+' doesn't work with unsigned conversion
@@ -48,7 +48,6 @@ static void			override_placeholder(t_ph *placeholder, __uint128_t value)
 		placeholder->precision = 1;
 	if (!value)
 		placeholder->flag &= ~HASH.code;
-
 }
 
 static void			get_alignment_params(int align_params[3], t_ph *placeholder,
@@ -59,7 +58,6 @@ static void			get_alignment_params(int align_params[3], t_ph *placeholder,
 	len = ft_strlen(converted_value);
 	if (!(value) && (placeholder->precision >= 0))
 		len = 0;
-
 	ZERO_COUNT = (int)placeholder->precision - len;
 	PADDING = (int)(placeholder->width - (max2(placeholder->precision, len)));
 	if (placeholder->flag & HASH.code)
@@ -71,43 +69,45 @@ static void			get_alignment_params(int align_params[3], t_ph *placeholder,
 	}
 }
 
-static void	fill_string(t_vec **vec, t_ph *placeholder, int *align_params,
-		char *converted_value)
+static void			fill_string(t_vec **vec, t_ph *placeholder,
+									int *align_params, char *converted_value)
 {
 	if (!(placeholder->flag & MINUS.code) && !(placeholder->flag & ZERO.code))
 		while (PADDING > 0 && PADDING--)
-			ft_vec_push(vec, ' ');
+			*vec = ft_vec_push(vec, ' ');
 	if (placeholder->flag & HASH.code)
 	{
 		if (placeholder->type == 'o')
-			ft_vec_push(vec, '0') && ZERO_COUNT--;
+			(*vec = ft_vec_push(vec, '0')) && ZERO_COUNT--;
 		else
-			ft_vec_string_push(vec, placeholder->type == 'X' ? "0X" : "0x");
+			*vec = ft_vec_string_push(vec, placeholder->type == 'X' ? "0X" :
+			"0x");
 	}
-	if (placeholder->flag & ZERO.code) //TODO объединить if'ы
-		ZERO_COUNT = ZERO_COUNT < 0 ? PADDING : ZERO_COUNT + PADDING;
 	if (placeholder->flag & ZERO.code)
+	{
+		ZERO_COUNT = ZERO_COUNT < 0 ? PADDING : ZERO_COUNT + PADDING;
 		PADDING = 0;
+	}
 	while (ZERO_COUNT > 0 && ZERO_COUNT--)
-		ft_vec_push(vec, '0');
-	ft_vec_string_push(vec, (!ft_strcmp(converted_value, "0") &&
+		*vec = ft_vec_push(vec, '0');
+	*vec = ft_vec_string_push(vec, (!ft_strcmp(converted_value, "0") &&
 		placeholder->precision >= 0) ? "" : converted_value);
 	while (PADDING > 0 && PADDING--)
-		ft_vec_push(vec, ' ');
+		*vec = ft_vec_push(vec, ' ');
 }
 
-char	*processing_x(t_vec **vec, t_ph *placeholder, va_list arg_ptr)
+char				*processing_x(t_vec **vec, t_ph *placeholder,
+															va_list arg_ptr)
 {
 	const int	base = placeholder->type == 'o' ? 8 : 16;
 	__uint128_t	value;
-	char 		*converted_value;
+	char		*converted_value;
 	int			align_params[3];
 
 	ft_memset(align_params, 0, sizeof(align_params));
 	value = get_value_from_va_stack(placeholder->length, arg_ptr);
-
 	if (!(converted_value = ft_itoa_base(value, base)))
-		exit(MALLOC_ERR);
+		return (NULL);
 	placeholder->type == 'X' ? ft_str_upper(converted_value) : converted_value;
 	override_placeholder(placeholder, value);
 	get_alignment_params(align_params, placeholder, value, converted_value);

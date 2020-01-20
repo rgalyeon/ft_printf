@@ -45,9 +45,9 @@ char	*ftoa(double val)
 	return (d_str);
 }
 
-int main()
-{
-	out_double(M_PI);
-	out_double(0.3 - 0.000001);
-	return (0);
-}
+//int main()
+//{
+//	out_double(M_PI);
+//	out_double(0.3 - 0.000001);
+//	return (0);
+//}
