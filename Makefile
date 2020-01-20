@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: mshagga <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/20 20:07:49 by rgalyeon          #+#    #+#              #
-#    Updated: 2020/01/20 20:29:08 by rgalyeon         ###   ########.fr        #
+#    Updated: 2020/01/20 23:30:44 by mshagga          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ $(NAME): $(OBJ)
 	@ar -rc $@ $(OBJ)
 
 %.o: %.c $(HEADERS)
-	gcc $(FLAGS) -I libft/includes -I includes/ -c $< -o $@
+	@gcc $(FLAGS) -I libft/includes -I includes/ -c $< -o $@
 
 clean:
 	@-rm -f $(OBJ)
@@ -64,5 +64,9 @@ clean:
 fclean: clean
 	@-rm -f $(NAME)
 	@make fclean -C libft
+
+test: all
+	make -C pft
+	./pft/test
 
 re: fclean all
