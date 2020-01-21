@@ -6,7 +6,7 @@
 /*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:39:14 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/21 00:19:23 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/21 23:57:16 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 // TODO Remove printf
 // TODO Negative numbers logic
+// TODO Add exponent
 
 t_bignum	*int2bignum(__int128 num)
 {
@@ -30,6 +31,12 @@ t_bignum	*int2bignum(__int128 num)
 	bignum->value = ft_strreverse(num_str);
 	bignum->size = ft_strlen(bignum->value);
 	return (bignum);
+}
+
+void		del_bignum(t_bignum **num)
+{
+	free((*num)->value);
+	free(*num);
 }
 
 t_bignum	*str2bignum(char *str, uint8_t flag_rev)
@@ -62,9 +69,6 @@ t_bignum	*bignum_add(t_bignum *n1, t_bignum *n2)
 	carry = 0;
 	if (bignum_cmp(n1, n2) == LESS)
 		ft_swap(&n1, &n2);
-	printf("n1 + n2:\n");
-	print_bignum(n1);
-	print_bignum(n2);
 	while (n1->value[i] && n2->value[i])
 	{
 		tmp = n1->value[i] - '0' + n2->value[i] - '0' + carry;
@@ -98,60 +102,16 @@ int8_t		bignum_cmp(t_bignum *n1, t_bignum *n2)
 	return (EQUAL);
 }
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-
-/* return = a * b.  Caller is responsible for freeing memory.
- * Handling of negatives, and zeros is not here, since not needed.
- */
-unsigned char *str_mult(const unsigned char *A, const unsigned char *B)
-{
-	int ax = 0, bx = 0, rx = 0, al, bl;
-	unsigned char *a, *b, *r; /* result */
-
-	al = strlen(A); bl = strlen(B);
-	r = calloc(al + bl + 1, 1);
-	/* convert A and B from ASCII string numbers, into numeric */
-	a = malloc(al+1); strcpy(a, A); for (ax = 0; ax < al; ++ax) a[ax] -= '0';
-	b = malloc(bl+1); strcpy(b, B); for (bx = 0; bx < bl; ++bx) b[bx] -= '0';
-
-	/* grade-school method of multiplication */
-	for (ax = al - 1; ax >= 0; ax--) {
-		int carry = 0;
-		for (bx = bl - 1, rx = ax + bx + 1; bx >= 0; bx--, rx--) {
-//			ft_printf("a[%d]=%d\tb[%d]=%d\tr[%d]=%d\t%d\n", ax, a[ax], bx, b[bx], rx, r[rx], a[ax] * b[bx] + r[rx] + carry);
-			int n = a[ax] * b[bx] + r[rx] + carry;
-			r[rx] = (n % 10);
-			carry = n / 10;
-		}
-		r[rx] += carry;
-	}
-	for (rx = 0; rx < al + bl; ++rx)
-		r[rx] += '0';
-	printf("result: %s\n", r);
-	while (r[0] == '0')
-		memmove(r, &r[1], al + bl);
-	free(b); free(a);
-	return r;
-}
-
 t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2)
 {
-	t_bignum	*res;
 	int			tmp;
 	int8_t		carry;
-	char		*buf;
+	char		buf[MAX_SIZE] = {0};
 	int			i;
 	int			j;
 
-	if (!(buf = (char*)ft_memalloc(n1->size + n2->size + 1)))
-		return (NULL);
-	if (bignum_cmp(n1, n2) < 0)
+	if (!(i = 0) && !(j = 0) && bignum_cmp(n1, n2) < 0)
 		ft_swap(n1, n2);
-	i = 0;
-	j = 0;
 	while (n1->value[i])
 	{
 		carry = 0;
@@ -159,18 +119,85 @@ t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2)
 		while (n2->value[j])
 		{
 			tmp = C2INT(n1->value[i]) * C2INT(n2->value[j]) + C2INT(buf[i + j]) + carry;
-			buf[i + j] = INT2C(tmp % 10);
+			buf[i + j++] = INT2C(tmp % 10);
 			carry = tmp / 10;
-			j++;
 		}
-		buf[i + j] = INT2C(carry);
-		i++;
+		buf[i++ + j] = carry ? '0' + carry : '\0';
 	}
-	buf[i + j - 1] = '\0';
 	return (str2bignum(buf, 0));
 }
 
-void		print_bignum(t_bignum *num)
+t_bignum	*bignum_mul_by_int(t_bignum *n, uint64_t m)
+{
+	int			i;
+	char		buf[MAX_SIZE] = {0};
+	uint64_t	carry;
+	uint64_t	tmp;
+
+	i  = 0;
+	carry = 0;
+	while (n->value[i])
+	{
+		tmp = (n->value[i] - '0') * m + carry;
+		buf[i] = tmp % 10 + '0';
+		carry = tmp / 10;
+		i++;
+	}
+	while (carry)
+	{
+		buf[i++] = carry % 10 + '0';
+		carry /= 10;
+	}
+	buf[i] = '\0';
+	return (str2bignum(buf, 0));
+}
+
+t_bignum	*bignum_pow2(t_bignum *num)
+{
+	t_bignum	*ptr;
+
+	ptr = bignum_mul(num, num);
+	return (ptr);
+}
+
+t_bignum	*bignum_pow(t_bignum *num, uint64_t p)
+{
+	t_bignum	*y;
+	t_bignum	*ptr;
+	t_bignum	*res;
+	t_bignum	*x;
+
+	if (p == 0)
+		return (int2bignum(1));
+	y = int2bignum(1);
+	x = str2bignum(num->value, 0);
+	while (p > 1)
+	{
+		if (p & 1u)
+		{
+			ptr = y;
+			y = bignum_mul(x, y);
+			del_bignum(&ptr);
+			ptr = x;
+			x = bignum_pow2(x);
+			p = (p - 1) >> 1u;
+			del_bignum(&ptr);
+		}
+		else
+		{
+			ptr = x;
+			x = bignum_pow2(ptr);
+			p = p >> 1u;
+			del_bignum(&ptr);
+		}
+	}
+	res = bignum_mul(x, y);
+	del_bignum(&y);
+	del_bignum(&x);
+	return (res);
+}
+
+void		print_bignum(t_bignum *num, int e)
 {
 	int		i;
 
@@ -178,22 +205,37 @@ void		print_bignum(t_bignum *num)
 		return ;
 	i = num->size;
 	while (i >= 0)
+	{
+		if (!(e - i - 1))
+			ft_printf(".");
 		ft_printf("%c", num->value[i--]);
+	}
 	ft_printf(" [%d]\n", num->size);
 }
+//
+//int main()
+//{
+//	t_bignum	*n1;
+//	t_bignum	*n2;
+//	t_bignum	*res;
+//	__uint128_t num = ((__uint128_t)0x7FFFFFFFFFFFFFFF << 64) | 0xFFFFFFFFFFFFFFFF;
+//
+//	n1 = str2bignum("3141592653589793238462643383279502884197169399375105820974944592", 1);
+//	n2 = str2bignum("2718281828459045235360287471352662497757247093699959574966967627", 1);
+//	res = bignum_add(n1, n2);
+//	print_bignum(res);
+//	print_bignum(bignum_mul(n1, n2));
+//	return (0);
+//}
 
-int main()
-{
-	t_bignum	*n1;
-	t_bignum	*n2;
-	t_bignum	*res;
-	__uint128_t num = ((__uint128_t)0x7FFFFFFFFFFFFFFF << 64) | 0xFFFFFFFFFFFFFFFF;
-
-	n1 = int2bignum(num);
-	n2 = str2bignum("", 1);
-	res = bignum_add(n1, n2);
-	print_bignum(res);
-	printf("%s\n", str_mult((const unsigned char*)"3617", (const unsigned char*)"13"));
-	print_bignum(bignum_mul(n1, n1));
-	return (0);
-}
+//int main()
+//{
+//	t_bignum *n1;
+//	t_bignum *n2;
+//	t_bignum *n3;
+//	t_bignum *n4;
+//
+////	n1 = str2bignum("3141592653589793238462643383279502884197169399375105820974944592", 1);
+//
+//	return (0);
+//}
