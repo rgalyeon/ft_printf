@@ -6,12 +6,18 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/20 19:44:08 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/21 16:01:27 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <stdio.h>
+
+/*
+** function parse "#-+ 0" flags
+** @param placeholder
+** @param format - given string
+*/
 
 static void	parse_flags(t_ph *placeholder, char **format)
 {
@@ -20,9 +26,9 @@ static void	parse_flags(t_ph *placeholder, char **format)
 	i = 0;
 	while (i < 5)
 	{
-		if (**format == FLAGS(i).symbol)
+		if (**format == g_flag[i].symbol)
 		{
-			placeholder->flag |= FLAGS(i).code;
+			placeholder->flag |= g_flag[i].code;
 			(*format)++;
 			i = 0;
 		}
@@ -35,7 +41,7 @@ static void	parse_flags(t_ph *placeholder, char **format)
 ** @param placeholder
 ** @param format - given string
 ** @param arg_ptr - va_list
-** @return -1 если ширина не указывалась
+** @return width if value occurs or  -1 if width is not given
 */
 
 static int	parse_width(t_ph *placeholder, char **format, va_list arg_ptr)
@@ -55,7 +61,7 @@ static int	parse_width(t_ph *placeholder, char **format, va_list arg_ptr)
 			width = va_arg(arg_ptr, int);
 			if (width < 0)
 			{
-				placeholder->flag |= MINUS.code;
+				placeholder->flag |= g_flag[MINUS].code;
 				width *= -1;
 			}
 			(*format)++;
@@ -91,7 +97,7 @@ static int	parse_precision(t_ph *placeholder, char **format, va_list arg_ptr)
 		if ((precision = va_arg(arg_ptr, int)) < 0)
 		{
 			placeholder->width = (unsigned int)precision * -1;
-			placeholder->flag |= MINUS.code;
+			placeholder->flag |= g_flag[MINUS].code;
 			precision = -1;
 		}
 		(*format)++;
@@ -104,7 +110,7 @@ static int	parse_precision(t_ph *placeholder, char **format, va_list arg_ptr)
 /*
 ** TODO: think about parse something after length
 ** @param placeholder
-** @param format
+** @param format - given string
 */
 
 static void	parse_length(t_ph *placeholder, char **format)
@@ -117,7 +123,7 @@ static void	parse_length(t_ph *placeholder, char **format)
 	length = 0;
 	while (i < 3)
 	{
-		length_symbol = LENGTH(i).symbol;
+		length_symbol = g_length[i].symbol;
 		if (**format == length_symbol)
 		{
 			(*format)++;
@@ -126,7 +132,7 @@ static void	parse_length(t_ph *placeholder, char **format)
 			else if (length_symbol == 'h' && **format == 'h' && ((*format)++))
 				length |= LENGTH_CHAR;
 			else
-				length |= LENGTH(i).code;
+				length |= g_length[i].code;
 			i = 0;
 		}
 		else
@@ -134,6 +140,14 @@ static void	parse_length(t_ph *placeholder, char **format)
 	}
 	placeholder->length = length;
 }
+
+/*
+** function parse placeholder's params and handle given type
+** @param vec - formatted string (vector)
+** @param format - given string
+** @param size - pointer to output string size
+** @param arg_ptr - va_list
+*/
 
 void		parse_placeholder(t_vec **vec, char **format, int *size,
 															va_list arg_ptr)

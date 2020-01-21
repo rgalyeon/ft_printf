@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/18 16:03:59 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/19 18:01:00 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/20 16:10:24 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ char	*ft_itoa_base(__int128 val, int base)
 	num_str[len] = '\0';
 	if (val == 0)
 		num_str[0] = '0';
+	if (val < 0)
+	{
+		num_str[0] = '-';
+		val = 0 - val;
+	}
 	while (val)
 	{
 		digit = val % base;

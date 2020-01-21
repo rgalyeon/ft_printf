@@ -6,11 +6,20 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 17:57:46 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/19 22:22:35 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/21 16:25:58 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+/*
+** Function handle given type;
+** If type is supported - the corresponding processing function is called
+** Else type handle as char
+** @param vec - output string (vector)
+** @param placeholder
+** @param arg_ptr - va_list
+*/
 
 void	processing_types(t_vec **vec, t_ph *placeholder, va_list arg_ptr)
 {
@@ -26,11 +35,11 @@ void	processing_types(t_vec **vec, t_ph *placeholder, va_list arg_ptr)
 	{
 		if (type == TYPE[i])
 		{
-			PROCESSING_TYPE(i, vec, placeholder, arg_ptr);
+			g_type[i].function(vec, placeholder, arg_ptr);
 			was_processed = TRUE;
 		}
 		i++;
 	}
 	if (was_processed == FALSE)
-		PROCESSING_TYPE(CHAR, vec, placeholder, arg_ptr);
+		g_type[CHAR].function(vec, placeholder, arg_ptr);
 }

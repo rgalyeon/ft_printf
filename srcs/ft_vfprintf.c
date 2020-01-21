@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:53:31 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/20 19:41:05 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/21 14:09:09 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@ static void	ft_printf_free(t_vec *vec)
 		free(vec);
 	}
 }
+
+/*
+** Function handle given string
+** @param size_ptr - pointer to size of formatted string
+** @param format - given string
+** @param arg_ptr - va_list
+** @return processed string
+*/
 
 t_vec		*parse_format(int *size_ptr, char *format, va_list arg_ptr)
 {
@@ -47,6 +55,14 @@ t_vec		*parse_format(int *size_ptr, char *format, va_list arg_ptr)
 	}
 	return (output_string);
 }
+
+/*
+** Write formatted to given file descriptor
+** @param fd - file descriptor
+** @param format - given string
+** @param arg_ptr - va_list
+** @return size of formatted string
+*/
 
 int			ft_vfprintf(int fd, const char *format, va_list arg_ptr)
 {

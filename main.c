@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 17:07:42 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/20 19:35:39 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/20 20:53:33 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,24 @@
 int main()
 {
 
-	ft_printf("%hi fewf", 4) + ft_printf("%s", NULL);
-	ft_printf("%hi vbte", 4);
-	ft_printf("%hi fewf", 4);
-	ft_printf("%d fqf", 4) + ft_printf("%sx eqe", NULL);
-	ft_printf("%#p", 4);
-	ft_printf("%X", 4);
+//	printf("%02ll4.2d$\n", 5);
+	printf("%10f$\n", 24.678);
+	printf("%#10f$\n", 24.678);
+	printf("%7.1f$\n", 24.678);
+	printf("%7.1f$\n", 24.898);
+	printf("%-7.0f$\n", 24.898);
+	printf("%07.1f$\n", 24.898);
+	printf("%07.1f$\n", 0.);
+	printf("%07.0f$\n", 0.);
+	printf("%+07.0f$\n\n", 0.);
+
+	ft_printf("%-2lc", 134);
+
+
+
+
+
+
+
 //	printf("%d\n", ft_printf("%*d\n", INT_MAX, 5));
 }
