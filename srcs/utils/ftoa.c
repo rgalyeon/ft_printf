@@ -6,7 +6,7 @@
 /*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 18:57:01 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/23 19:57:47 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/23 22:25:57 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,7 @@ char	*out_format(const char *number, int size, int prec, int pow)
 	len = prec + (pow < 0 ? 2 : pow + 1);
 	if (!(format = (char*)malloc(sizeof(char) * len + 1)))
 		return (NULL);
-	integral = pow <= 0 ? 1 : pow;
-	while (integral--)
+	integral = pow <=
 		format[index++] = pow <= 0 ? '0' : number[size--];
 	if (prec > 0)
 		format[index++] = '.';
@@ -177,3 +176,4 @@ int main()
 	printf("%.*f\n", prec, number.d);
 	return (0);
 }
+]
