@@ -75,5 +75,6 @@ t_bignum	*bignum_pow(t_bignum *num, uint64_t p);
 
 int8_t		bignum_cmp(t_bignum *n1, t_bignum *n2);
 void		print_bignum(t_bignum *num, int e);
+char	*ftoa(double val, int prec);
 
 #endif

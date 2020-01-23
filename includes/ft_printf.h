@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:10:03 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/21 16:51:16 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/23 15:55:33 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdarg.h>
 # include "libft.h"
 # include "utils.h"
+
+# define DEFAULT_PREC 6
 
 /*
 ** Structure for printf's placeholder
@@ -70,13 +72,13 @@ static t_flag g_flag[] =
 # define LENGTH_LONG				0x2u
 # define LENGTH_SHORT				0x4u
 # define LENGTH_CHAR				0x8u
-# define LENGTH_LONG_LONG_DOUBLE	0x10u
+# define LENGTH_LONG_DOUBLE			0x10u
 
 static t_flag		g_length[] =
 {
 	{'l', LENGTH_LONG},
 	{'h', LENGTH_SHORT},
-	{'L', LENGTH_LONG_LONG_DOUBLE}
+	{'L', LENGTH_LONG_DOUBLE}
 
 };
 
@@ -90,7 +92,7 @@ typedef struct		s_type
 	void			(*function)(t_vec **, t_ph *placeholder, va_list args);
 }					t_type;
 
-# define TYPE	"diouxXcsp"
+# define TYPE	"diouxXcspf"
 # define CHAR	6
 
 /*
@@ -122,6 +124,7 @@ void				processing_x(t_vec **vec, t_ph *pholder, va_list arg_ptr);
 void				processing_c(t_vec **vec, t_ph *pholder, va_list arg_ptr);
 void				processing_s(t_vec **vec, t_ph *pholder, va_list arg_ptr);
 void				processing_p(t_vec **vec, t_ph *pholder, va_list arg_ptr);
+void				processing_f(t_vec **vec, t_ph *pholder, va_list arg_ptr);
 
 static t_type		g_type[] =
 {
@@ -134,7 +137,10 @@ static t_type		g_type[] =
 	{'c', processing_c},
 	{'s', processing_s},
 	{'p', processing_p},
+	{'f', processing_f}
 };
+
+//char	*ftoa(double val, int prec);
 
 /*
 ** Utils for project

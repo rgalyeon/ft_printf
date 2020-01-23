@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mshagga <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/20 20:07:49 by rgalyeon          #+#    #+#              #
-#    Updated: 2020/01/20 23:30:44 by mshagga          ###   ########.fr        #
+#    Updated: 2020/01/23 20:41:00 by rgalyeon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,11 @@ LIBFT_SRC = srcs/conv/ft_atoi.c \
             srcs/string/ft_str_upper.c \
             srcs/string/ft_strcmp.c \
             srcs/string/ft_strlen.c \
+            srcs/string/ft_strchr.c \
+            srcs/string/ft_strdup.c \
+            srcs/string/ft_strcpy.c \
+            srcs/string/ft_strreverse.c \
+            srcs/sort/ft_swap.c \
             srcs/struct/vector/ft_vec_init.c \
             srcs/struct/vector/ft_vec_push.c \
             srcs/struct/vector/ft_vec_string_push.c
@@ -37,8 +42,11 @@ SRC = srcs/ft_printf.c \
       srcs/processing_types/processing_s.c \
       srcs/processing_types/processing_u.c \
       srcs/processing_types/processing_x.c \
+      srcs/processing_types/processing_f.c \
       srcs/processing_types.c \
       srcs/utils/ft_itoa_base.c \
+      srcs/utils/bignum.c \
+      srcs/utils/ftoa.c \
       srcs/utils.c \
       $(addprefix libft/, $(LIBFT_SRC))
 
