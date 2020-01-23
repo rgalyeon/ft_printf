@@ -165,15 +165,15 @@ char	*ftoa(double val, int prec)
 
 
 
-int main()
-{
-	t_conv	number;
-	int		prec;
-
-	number.d = 0.3;
-	prec = 123;
-	out_double(number.d);
-	printf("%s\n", ftoa(number.d, prec));
-	printf("%.*f\n", prec, number.d);
-	return (0);
-}
+//int main()
+//{
+//	t_conv	number;
+//	int		prec;
+//
+//	number.d = 0.3;
+//	prec = 123;
+//	out_double(number.d);
+//	printf("%s\n", ftoa(number.d, prec));
+//	printf("%.*f\n", prec, number.d);
+//	return (0);
+//}
