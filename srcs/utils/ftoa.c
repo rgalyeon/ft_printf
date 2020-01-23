@@ -6,7 +6,7 @@
 /*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 18:57:01 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/23 22:25:57 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/24 00:25:45 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char		*special_copy(t_decimal *dec)
 	else if (dec->exponent)
 		ft_memcpy(res + dec->sign, INF, sizeof(INF));
 	else
-		ft_memcpy(res + dec->sign, ZERO_V, sizeof(ZERO_V)); // null-terminator
+		ft_memcpy(res + dec->sign, ZERO_V, sizeof(ZERO_V));
 	return (res);
 }
 
@@ -120,31 +120,63 @@ t_bignum	*ryu(t_decimal *num)
 	return (res);
 }
 
-char	*out_format(const char *number, int size, int prec, int pow)
+char	*out_format(t_bignum *number, int prec, int pow, int sign)
 {
 	char	*format;
 	int		index;
 	int		len;
 	int		integral;
+	int		size;
 
 	index = 0;
-	len = prec + (pow < 0 ? 2 : pow + 1);
+	size = number->size - 1;
+	len = prec + sign + (pow < 0 ? 2 : pow + 1);
 	if (!(format = (char*)malloc(sizeof(char) * len + 1)))
 		return (NULL);
-	integral = pow <=
-		format[index++] = pow <= 0 ? '0' : number[size--];
+	if (sign)
+		format[index++] = '-';
+	integral = pow <= 0 ? 1 : pow;
+	while (integral--)
+		format[index++] = pow <= 0 ? '0' : number->value[size--];
 	if (prec > 0)
 		format[index++] = '.';
-	pow = pow < 0 ? 0 - pow : 0;
-	while (pow-- > 0 && prec-- > 0)
+	while (pow++ < 0 && prec-- > 0)
 		format[index++] = '0';
 	while (prec-- > 0)
-		format[index++] = size >= 0 ? number[size--] : '0';
+		format[index++] = size >= 0 ? number->value[size--] : '0';
 	format[index] = '\0';
 	return (format);
 }
 
-// TODO Free before return
+int		dbl_rounding(t_bignum *number, t_decimal *dec, int prec, int integral)
+{
+	int	index;
+	int	i;
+	int	carry;
+
+	integral = integral <= 0 ? 0 : integral;
+	index = number->size - 1 - integral - prec;
+	carry = 0;
+	if (number->value[index] == '5')
+	{
+		i = index - 1;
+		while (i >= 0 && number->value[i] == '0')
+			i--;
+		carry = number->value[i] ? 1 : 0;
+	}
+	while (carry && number->value[index])
+	{
+		carry = (number->value[index + 1] == '9');
+		number->value[index] = '0';
+		index++;
+	}
+	ft_printf("%c\n", number->value[index]);
+	number->value[index]++;
+	return (1);
+}
+
+
+// TODO free before return
 char	*ftoa(double val, int prec)
 {
 	t_decimal	*dec;
@@ -157,8 +189,12 @@ char	*ftoa(double val, int prec)
 		return (special_copy(dec));
 	if (!(all_num = ryu(dec)))
 		return (NULL);
-	if (!(out = out_format(all_num->value, all_num->size - 1, prec, dec->exponent + all_num->size)))
+	print_bignum(all_num, 0);
+	dbl_rounding(all_num, dec, prec, dec->exponent + all_num->size);
+	if (!(out = out_format(all_num, prec, dec->exponent + all_num->size, dec->sign)))
 		return (NULL);
+	free(dec);
+	del_bignum(&all_num);
 	return (out);
 }
 
@@ -169,11 +205,10 @@ int main()
 	t_conv	number;
 	int		prec;
 
-	number.d = 0.3;
-	prec = 123;
+	number.d = 0.99995;
+	prec = 4;
 	out_double(number.d);
 	printf("%s\n", ftoa(number.d, prec));
 	printf("%.*f\n", prec, number.d);
 	return (0);
 }
-]
