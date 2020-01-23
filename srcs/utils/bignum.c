@@ -6,7 +6,7 @@
 /*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:39:14 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/21 23:57:16 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/23 16:13:07 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,12 +230,9 @@ void		print_bignum(t_bignum *num, int e)
 
 //int main()
 //{
-//	t_bignum *n1;
-//	t_bignum *n2;
-//	t_bignum *n3;
-//	t_bignum *n4;
+//	t_bignum	*n;
 //
-////	n1 = str2bignum("3141592653589793238462643383279502884197169399375105820974944592", 1);
-//
+//	n = int2bignum(25);
+//	print_bignum(bignum_pow(n, 50), 0);
 //	return (0);
 //}
