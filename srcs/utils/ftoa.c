@@ -6,7 +6,7 @@
 /*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 18:57:01 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/24 00:25:45 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/25 00:27:00 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <math.h>
 #include <limits.h>
 #include <stdio.h>
+#include <float.h>
 
 void	out_double(double num)
 {
@@ -49,19 +50,17 @@ t_decimal	*d2s(double val)
 	dbl.d = val;
 	if (!(number = (t_decimal*)malloc(sizeof(t_decimal))))
 		return (NULL);
-	if (dbl.u.exponent == 0)
-	{
-		e2 = 1 - DBL_MANTISSA_BITS - 2;
-		m2 = dbl.u.mantissa;
-	}
-	else
-	{
-		e2 = dbl.u.exponent - DBL_MANTISSA_BITS - DBL_BIAS;
-		m2 = dbl.u.mantissa | (1ULL << DBL_MANTISSA_BITS);
-	}
+	number->sign = dbl.u.sign;
+	number->mantissa = dbl.u.mantissa;
+	number->exponent = dbl.u.exponent;
+	if (dbl.u.exponent == MAX_EXPONENT || (!dbl.u.exponent && !dbl.u.mantissa))
+		return (number);
+	e2 = dbl.u.exponent == 0 ? 1 - DBL_MANTISSA_BITS - 2 :
+			dbl.u.exponent - DBL_MANTISSA_BITS - DBL_BIAS;
+	m2 = dbl.u.exponent == 0 ? dbl.u.mantissa :
+			dbl.u.mantissa | (1ULL << DBL_MANTISSA_BITS);
 	number->mantissa = m2;
 	number->exponent = e2;
-	number->sign = dbl.u.sign;
 	return (number);
 }
 
@@ -87,13 +86,13 @@ char		*special_copy(t_decimal *dec)
 	char	*res;
 	int		len;
 
-	len = dec->sign + dec->mantissa || dec->exponent ? 3 : 1;
+	len = dec->sign + (dec->mantissa || dec->exponent ? 3 : 1);
 	if (!(res = (char*)malloc(sizeof(char) * len + 1)))
 		return (NULL);
-	if (dec->mantissa)
-		ft_memcpy(res, NAN_V, sizeof(NAN_V));
 	if (dec->sign)
 		res[0] = '-';
+	if (dec->mantissa)
+		ft_memcpy(res, NAN_V, sizeof(NAN_V));
 	else if (dec->exponent)
 		ft_memcpy(res + dec->sign, INF, sizeof(INF));
 	else
@@ -120,6 +119,7 @@ t_bignum	*ryu(t_decimal *num)
 	return (res);
 }
 
+// TODO add precision to zero output
 char	*out_format(t_bignum *number, int prec, int pow, int sign)
 {
 	char	*format;
@@ -129,14 +129,14 @@ char	*out_format(t_bignum *number, int prec, int pow, int sign)
 	int		size;
 
 	index = 0;
-	size = number->size - 1;
+	size = !number->value[number->size] ? number->size - 1 : number->size;
 	len = prec + sign + (pow < 0 ? 2 : pow + 1);
 	if (!(format = (char*)malloc(sizeof(char) * len + 1)))
 		return (NULL);
 	if (sign)
 		format[index++] = '-';
 	integral = pow <= 0 ? 1 : pow;
-	while (integral--)
+	while (integral-- && size >= 0)
 		format[index++] = pow <= 0 ? '0' : number->value[size--];
 	if (prec > 0)
 		format[index++] = '.';
@@ -148,35 +148,43 @@ char	*out_format(t_bignum *number, int prec, int pow, int sign)
 	return (format);
 }
 
-int		dbl_rounding(t_bignum *number, t_decimal *dec, int prec, int integral)
+int		banker(t_bignum *num, int index)
 {
-	int	index;
 	int	i;
-	int	carry;
 
-	integral = integral <= 0 ? 0 : integral;
-	index = number->size - 1 - integral - prec;
-	carry = 0;
-	if (number->value[index] == '5')
-	{
-		i = index - 1;
-		while (i >= 0 && number->value[i] == '0')
-			i--;
-		carry = number->value[i] ? 1 : 0;
-	}
-	while (carry && number->value[index])
-	{
-		carry = (number->value[index + 1] == '9');
-		number->value[index] = '0';
-		index++;
-	}
-	ft_printf("%c\n", number->value[index]);
-	number->value[index]++;
+	i = index - 2;
+	while (i > 0 && num->value[i] == '0')
+		i--;
+	if (i == 0 && num->value[i] == '0')
+		return (num->value[index] % 2 == 1 ? 1 : 0);
 	return (1);
 }
 
+int		dbl_rounding(t_bignum *num, t_decimal *dec, int prec, int integral)
+{
+	int			index;
+	int			carry;
 
-// TODO free before return
+	index = num->size - integral - prec; // index stay on last digit to round
+	if (index <= 0)
+		return (0);
+	if (num->value[index - 1] >= '0' && num->value[index - 1] <= '4')
+		carry = 0;
+	else
+		carry = num->value[index - 1] == '5' ? banker(num, index) : 1;
+	while (carry && num->value[index])
+	{
+		num->value[index] += num->value[index] == '9' ? -9 : 1;
+		carry = (num->value[index++] == '0');
+	}
+	if (carry)
+	{
+		dec->exponent++;
+		num->value[index] = '1';
+	}
+	return (0);
+}
+
 char	*ftoa(double val, int prec)
 {
 	t_decimal	*dec;
@@ -189,7 +197,6 @@ char	*ftoa(double val, int prec)
 		return (special_copy(dec));
 	if (!(all_num = ryu(dec)))
 		return (NULL);
-	print_bignum(all_num, 0);
 	dbl_rounding(all_num, dec, prec, dec->exponent + all_num->size);
 	if (!(out = out_format(all_num, prec, dec->exponent + all_num->size, dec->sign)))
 		return (NULL);
@@ -198,17 +205,16 @@ char	*ftoa(double val, int prec)
 	return (out);
 }
 
-
-
-int main()
-{
-	t_conv	number;
-	int		prec;
-
-	number.d = 0.99995;
-	prec = 4;
-	out_double(number.d);
-	printf("%s\n", ftoa(number.d, prec));
-	printf("%.*f\n", prec, number.d);
-	return (0);
-}
+//// TODO rounding && special cases
+//int main()
+//{
+//	t_conv	number;
+//	int		prec;
+//
+//	number.d = 44.5;
+//	prec = 0;
+////	out_double(number.d);
+//	printf("ft_printf:\t%s\n", ftoa(number.d, prec));
+//	printf("printf:\t\t%.*f\n", prec, number.d);
+//	return (0);
+//}
