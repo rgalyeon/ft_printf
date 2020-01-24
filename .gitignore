@@ -3,3 +3,10 @@ cmake-build-debug
 *.o
 .idea
 a.out
+pft/
+main.c
+a.out
+test.libc
+test.mine
+results.txt
+history.csv

@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra
 NAME = libftprintf.a
 
 LIBFT_SRC = srcs/conv/ft_atoi.c \
