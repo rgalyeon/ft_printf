@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/21 16:01:27 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/24 15:16:15 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	parse_width(t_ph *placeholder, char **format, va_list arg_ptr)
 		if (ft_isdigit(**format))
 		{
 			width = ft_atoi(*format);
-			*format += ft_int_len(width);
+			*format += ft_uint_len(width);
 		}
 		else
 		{
