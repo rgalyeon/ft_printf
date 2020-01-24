@@ -32,7 +32,7 @@ typedef u_int8_t	t_bool;
 typedef struct		s_ph
 {
 	u_int8_t		flag;
-	long long int	width;
+	int				width;
 	int				precision;
 	u_int8_t		length;
 	u_int8_t		type;
@@ -139,8 +139,6 @@ static t_type		g_type[] =
 	{'p', processing_p},
 	{'f', processing_f}
 };
-
-//char	*ftoa(double val, int prec);
 
 /*
 ** Utils for project
