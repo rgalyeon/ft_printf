@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ftoa.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 18:57:01 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/25 00:27:00 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/25 12:30:31 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,8 @@ int		dbl_rounding(t_bignum *num, t_decimal *dec, int prec, int integral)
 	int			carry;
 
 	index = num->size - integral - prec; // index stay on last digit to round
+	if (index > num->size)
+		return (0);
 	if (index <= 0)
 		return (0);
 	if (num->value[index - 1] >= '0' && num->value[index - 1] <= '4')
@@ -205,7 +207,7 @@ char	*ftoa(double val, int prec)
 	return (out);
 }
 
-//// TODO rounding && special cases
+// TODO rounding && special cases
 //int main()
 //{
 //	t_conv	number;
@@ -213,7 +215,7 @@ char	*ftoa(double val, int prec)
 //
 //	number.d = 44.5;
 //	prec = 0;
-////	out_double(number.d);
+//	out_double(number.d);
 //	printf("ft_printf:\t%s\n", ftoa(number.d, prec));
 //	printf("printf:\t\t%.*f\n", prec, number.d);
 //	return (0);

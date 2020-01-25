@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 18:10:15 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/25 12:39:20 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/25 14:22:22 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void			get_alignment_params(int align_params[3], t_ph *ph,
 {
 	int len;
 
-	len = (int)ft_strlen(value) + has_sign + (ft_strchr(value, 'n') ? 1 : 0);
+	len = (int)ft_strlen(value) + has_sign;
 	len += ph->precision == 0 && ph->flag & g_flag[HASH].code ? 1 : 0;
 	align_params[PAD] = (int)ph->width - len;
 }
