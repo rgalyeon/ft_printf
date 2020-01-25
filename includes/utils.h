@@ -23,7 +23,7 @@
 # define C2INT(c)		((!c) ? 0 : c - '0')
 # define INT2C(c)		c + '0'
 # define MAX_EXPONENT	2047
-# define NAN_V			"NaN"
+# define NAN_V			"nan"
 # define INF			"inf"
 # define ZERO_V			"0"
 
