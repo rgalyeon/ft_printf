@@ -80,6 +80,8 @@ int			ft_vfprintf(int fd, const char *format, va_list arg_ptr)
 	}
 	if (!output_string)
 		output_size = -1;
+	else if (output_size != -1)
+		output_size -= output_string->offset;
 	ft_printf_free(output_string);
 	return (output_size);
 }

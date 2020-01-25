@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/18 11:51:19 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/21 16:55:46 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/25 19:56:30 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,24 @@ static void	fill_string(t_vec **vec, t_ph *ph,
 	int				len;
 	const t_bool	has_left_padding = (ph->flag & g_flag[MINUS].code);
 	const char		fill_char = (ph->flag & g_flag[ZERO].code) ? '0' : ' ';
+	char			*tmp;
 
 	len = align_params[FULL_SIZE] - align_params[PAD];
 	if (!has_left_padding)
 		while (align_params[PAD] > 0 && align_params[PAD]--)
 			*vec = ft_vec_push(vec, fill_char);
 	while (len--)
-		*vec = ft_vec_push(vec, *row_str++);
+		if (ph->type == 's' || ft_isprint(*row_str))
+			*vec = ft_vec_push(vec, *row_str++);
+		else if (!ft_isprint(*row_str))
+		{
+			*vec = ft_vec_push(vec, '^');
+			if (!(tmp = ft_itoa_base(*row_str++, 10)))
+				*vec = NULL;
+			*vec = ft_vec_string_push(vec, tmp);
+			(*vec)->offset += ft_strlen(tmp);
+			free(tmp);
+		}
 	if (has_left_padding)
 		while (align_params[PAD] > 0 && align_params[PAD]--)
 			*vec = ft_vec_push(vec, ' ');

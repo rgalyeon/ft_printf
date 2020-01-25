@@ -6,7 +6,7 @@
 #    By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/20 20:07:49 by rgalyeon          #+#    #+#              #
-#    Updated: 2020/01/23 20:41:00 by rgalyeon         ###   ########.fr        #
+#    Updated: 2020/01/25 19:05:53 by rgalyeon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ LIBFT_SRC = srcs/conv/ft_atoi.c \
             srcs/math/ft_int_len.c \
             srcs/char/ft_isdigit.c \
             srcs/char/ft_toupper.c \
+            srcs/char/ft_isprint.c \
             srcs/memory/ft_memalloc.c \
             srcs/memory/ft_memset.c \
             srcs/memory/ft_bzero.c \
@@ -43,6 +44,8 @@ SRC = srcs/ft_printf.c \
       srcs/processing_types/processing_u.c \
       srcs/processing_types/processing_x.c \
       srcs/processing_types/processing_f.c \
+      srcs/processing_types/processing_b.c \
+      srcs/processing_types/processing_n.c \
       srcs/processing_types.c \
       srcs/utils/ft_itoa_base.c \
       srcs/utils/bignum.c \
