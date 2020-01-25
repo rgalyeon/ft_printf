@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 18:10:15 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/24 21:50:41 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/25 12:39:20 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ static long double	get_value_from_va_stack(u_int8_t length, va_list arg_ptr)
 	return (value);
 }
 
+/*
+** Function disable conflicting placeholder's parameters for 'f' type
+** Flag 0 ignored if flag '-' given
+** Hash has no effect if precision given, etc...
+** @param placeholder
+** @param value - string value
+*/
+
 static void			override_placeholder(t_ph *placeholder, const char *value)
 {
 	placeholder->width = placeholder->width <= -1 ? 0 : placeholder->width;
@@ -34,16 +42,38 @@ static void			override_placeholder(t_ph *placeholder, const char *value)
 		placeholder->flag &= ~(g_flag[SPACE].code);
 	if (placeholder->precision > 0)
 		placeholder->flag &= ~g_flag[HASH].code;
+	if (ft_strchr(value, 'n'))
+		placeholder->flag &= ~g_flag[ZERO].code;
+	if (!ft_strcmp(value, "nan"))
+		placeholder->flag &= ~(g_flag[SPACE].code | g_flag[PLUS].code);
 }
 
-static void			get_alignment_params(int align_params[3], t_ph *placeholder,
+/*
+** Function write in align_params array alignment params (padding,zero_pad, ...)
+** In float case PADDING include space padding and zero padding
+** @param align_params - array for writing parameters
+** @param placeholder
+** @value - string value
+** @has_sign - 1 if '+' or ' ' given; else 0
+*/
+
+static void			get_alignment_params(int align_params[3], t_ph *ph,
 		char *value, t_bool has_sign)
 {
 	int len;
 
 	len = (int)ft_strlen(value) + has_sign + (ft_strchr(value, 'n') ? 1 : 0);
-	align_params[PAD] = (int)placeholder->width - len;
+	len += ph->precision == 0 && ph->flag & g_flag[HASH].code ? 1 : 0;
+	align_params[PAD] = (int)ph->width - len;
 }
+
+/*
+** Function write processed string (placeholder) to vector
+** @param vec - output string (vector)
+** @param ph - placeholder
+** @param align_params - array with padding params
+** @param value - string value
+*/
 
 static void			fill_string(t_vec **vec, t_ph *ph, int *align_params,
 		char *value)
