@@ -108,10 +108,15 @@ void				processing_f(t_vec **vec, t_ph *placeholder,
 	value = get_value_from_va_stack(placeholder->length, arg_ptr);
 	placeholder->precision = placeholder->precision <= -1 ?
 									DEFAULT_PREC : placeholder->precision;
-	str_value = ftoa(value, placeholder->precision);
+	if (!(str_value = ftoa(value, placeholder->precision)))
+	{
+		*vec = NULL;
+		return ;
+	}
 	override_placeholder(placeholder, str_value);
 	has_sign = ((placeholder->flag & g_flag[PLUS].code) ||
 			(placeholder->flag & g_flag[SPACE].code));
 	get_alignment_params(align_params, placeholder, str_value, has_sign);
 	fill_string(vec, placeholder, align_params, str_value);
+	free(str_value);
 }
