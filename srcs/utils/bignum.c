@@ -6,17 +6,13 @@
 /*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:39:14 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/23 16:13:07 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/25 23:50:31 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-// TODO Remove printf
-// TODO Negative numbers logic
-// TODO Add exponent
-
-t_bignum	*int2bignum(__int128 num)
+t_bignum	*int2bignum(__uint128_t num)
 {
 	t_bignum	*bignum;
 	char		*num_str;
@@ -106,12 +102,13 @@ t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2)
 {
 	int			tmp;
 	int8_t		carry;
-	char		buf[MAX_SIZE] = {0};
+	char		buf[MAX_SIZE];
 	int			i;
 	int			j;
 
 	if (!(i = 0) && !(j = 0) && bignum_cmp(n1, n2) < 0)
 		ft_swap(n1, n2);
+	ft_memset(buf, 0, MAX_SIZE);
 	while (n1->value[i])
 	{
 		carry = 0;
@@ -130,7 +127,7 @@ t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2)
 t_bignum	*bignum_mul_by_int(t_bignum *n, uint64_t m)
 {
 	int			i;
-	char		buf[MAX_SIZE] = {0};
+	char		buf[MAX_SIZE];
 	uint64_t	carry;
 	uint64_t	tmp;
 
@@ -196,43 +193,3 @@ t_bignum	*bignum_pow(t_bignum *num, uint64_t p)
 	del_bignum(&x);
 	return (res);
 }
-
-void		print_bignum(t_bignum *num, int e)
-{
-	int		i;
-
-	if (!num)
-		return ;
-	i = num->size;
-	while (i >= 0)
-	{
-		if (!(e - i - 1))
-			ft_printf(".");
-		ft_printf("%c", num->value[i--]);
-	}
-	ft_printf(" [%d]\n", num->size);
-}
-//
-//int main()
-//{
-//	t_bignum	*n1;
-//	t_bignum	*n2;
-//	t_bignum	*res;
-//	__uint128_t num = ((__uint128_t)0x7FFFFFFFFFFFFFFF << 64) | 0xFFFFFFFFFFFFFFFF;
-//
-//	n1 = str2bignum("3141592653589793238462643383279502884197169399375105820974944592", 1);
-//	n2 = str2bignum("2718281828459045235360287471352662497757247093699959574966967627", 1);
-//	res = bignum_add(n1, n2);
-//	print_bignum(res);
-//	print_bignum(bignum_mul(n1, n2));
-//	return (0);
-//}
-
-//int main()
-//{
-//	t_bignum	*n;
-//
-//	n = int2bignum(25);
-//	print_bignum(bignum_pow(n, 50), 0);
-//	return (0);
-//}

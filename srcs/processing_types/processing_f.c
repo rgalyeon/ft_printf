@@ -108,7 +108,7 @@ void				processing_f(t_vec **vec, t_ph *placeholder,
 	value = get_value_from_va_stack(placeholder->length, arg_ptr);
 	placeholder->precision = placeholder->precision <= -1 ?
 									DEFAULT_PREC : placeholder->precision;
-	if (!(str_value = ftoa(value, placeholder->precision)))
+	if (!(str_value = ftoa(value, placeholder->precision, placeholder->length)))
 	{
 		*vec = NULL;
 		return ;

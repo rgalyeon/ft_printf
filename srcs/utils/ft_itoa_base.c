@@ -31,11 +31,6 @@ char	*ft_itoa_base(__int128 val, int base)
 	num_str[len] = '\0';
 	if (val == 0)
 		num_str[0] = '0';
-	if (val < 0)
-	{
-		num_str[0] = '-';
-		val = 0 - val;
-	}
 	while (val)
 	{
 		digit = val % base;
