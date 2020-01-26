@@ -19,6 +19,10 @@ The following format specifiers are supported:
 | c      | Single character |
 | s      | String of characters |
 | p      | Pointer address |
+| b      | Binary representation of integer (Start print at most significant bit) |
+| B      | Binary representation of integer (Print all bits) |
+| r      | String of characters (Print non-printable characters) |
+| n      | None (The number of characters written so far is stored into the integer indicated by the int * (or variant)|
 | %      | A % followed by another % character will write a single % |
 
 ### Supported Flags
@@ -28,7 +32,7 @@ The following format specifiers are supported:
 | '-'        | A negative field width flag; the converted value is to be left adjusted on the field boundary. The converted value is padded on the right with blanks, rather than on the left with blanks or zeros.  A - overrides a 0 if both are given. Right justification is the default. |
 | '+'        | A sign must always be placed before a number produced by a signed conversion.  A + overrides a space if both are used. |
 |' ' (space) | A blank should be left before a positive number produced by a signed conversion (__d__, __f__, or __i__). |
-| '#'     | The value should be converted to an ''alternate form''. For __c__, __d__, __i__, __p__, __s__, and __u__ conversions, this option has no effect.  For __o__ conversions, the precision of the number is increased to force the first character of the output string to a zero. For __x__ and __X__ conversions, a non-zero result has the string '0x' (or '0X' for __X__ conversions) prepended to it. For __f__ conversion, the result will always contain a decimal point, even if no digits follow it (normally, a decimal point appears in the results of those conversions only if a digit follows). |
+| '#'     | The value should be converted to an ''alternate form''. For __c__, __d__, __i__, __p__, __s__, __r__, __n__ and __u__ conversions, this option has no effect.  For __o__ conversions, the precision of the number is increased to force the first character of the output string to a zero. For __x__ and __X__ conversions, a non-zero result has the string '0x' (or '0X' for __X__ conversions) prepended to it. For __f__ conversion, the result will always contain a decimal point, even if no digits follow it (normally, a decimal point appears in the results of those conversions only if a digit follows). For __b__ and __B__ conversions, will be placed one space between each byte. |
 | '0'     | Zero padding. For all conversions, the converted value is padded on the left with zeros rather than blanks.  If a precision is given with a numeric conversion (__d__, __i__, __o__, __u__, __i__, __x__, and __X__), the 0 flag is ignored. |
 
 ### Supported Width
@@ -50,7 +54,7 @@ The following format specifiers are supported:
 
 The length sub-specifier modifies the length of the data type.
 
-| Modifier | d i  | u o x X |
+| Modifier | d i  | u o x X b B |
 |----------|------|---------|
 | hh       | signed char | unsigned char |
 | h        | short | unsigned short |
