@@ -6,7 +6,7 @@
 /*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 19:04:14 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/25 23:37:15 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/28 13:59:46 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,15 @@ typedef struct s_split
 	size_t		m;
 }				t_split;
 
+typedef struct	s_equation
+{
+	t_split		*x;
+	t_split		*y;
+	t_bignum	*a;
+	t_bignum	*b;
+	t_bignum	*c;
+}				t_eq;
+
 /**
 ** Init functions
 */
@@ -90,7 +99,7 @@ typedef struct s_split
 t_bignum	*int2bignum(__uint128_t num);
 //t_bignum	*str2bignum(char *num);
 t_bignum	*str2bignum(char *num, int start, int end);
-void		del_bignum(t_bignum *num);
+void		*del_bignum(t_bignum *num);
 
 /**
 ** Arithmetic operations
@@ -100,7 +109,9 @@ t_bignum	 *bignum_add(t_bignum *n1, t_bignum *n2);
 t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2);
 t_bignum	*bignum_pow(t_bignum *num, uint64_t p);
 t_bignum	*bignum_square(t_bignum *num);
-
+t_bignum	*bignum_sub(t_bignum *n1, t_bignum *n2);
+t_bignum	*mul_karatsuba(t_bignum *n1, t_bignum *n2);
+t_bignum	*bignum_lshift(t_bignum *num, int shift);
 /**
 ** Compare operations
 */

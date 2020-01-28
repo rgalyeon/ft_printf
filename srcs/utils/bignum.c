@@ -6,7 +6,7 @@
 /*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:39:14 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/25 23:50:31 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/28 15:20:25 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ t_bignum	*int2bignum(__uint128_t num)
 	return (bignum);
 }
 
-void		del_bignum(t_bignum *num)
+void		*del_bignum(t_bignum *num)
 {
 	free(num->value);
 	free(num);
+	return (NULL);
 }
 
 //t_bignum	*str2bignum(char *str)
@@ -53,12 +54,25 @@ void		del_bignum(t_bignum *num)
 //	return (bignum);
 //}
 
+int			zero_case(char *str, int len)
+{
+	while (*str == '0' && len > 0)
+	{
+		len--;
+		str++;
+	}
+	return (!len ? 1 : 0);
+}
 t_bignum	*str2bignum(char *str, int start, int end)
 {
 	t_bignum	*num;
 	size_t		len;
 
 	len = !start && !end ? ft_strlen(str) : end - start + 1;
+	if (zero_case(str + start, len))
+		return (int2bignum(0));
+	if (start > end)
+		len = 1;
 	if (!(num = (t_bignum*)malloc(sizeof(t_bignum))))
 		return (NULL);
 	if (!(num->value = (char*)malloc(sizeof(char) * len + 1)))
@@ -67,8 +81,11 @@ t_bignum	*str2bignum(char *str, int start, int end)
 		return (NULL);
 	}
 	ft_memcpy(num->value, str + start, len);
-	num->value[len] = '\0';
-	num->size = len;
+	num->value[len] = len ? '\0' : '0';
+	if (!len)
+		num->value[1] = '\0';
+	else
+		num->size = len;
 	return (num);
 }
 
@@ -96,7 +113,40 @@ t_bignum	*bignum_add(t_bignum *n1, t_bignum *n2)
 			buf[i] = n1->value[i];
 			i++;
 		}
+	buf[i] = '\0';
 	return (str2bignum((char*)buf, 0, 0));
+}
+
+t_bignum	*bignum_sub(t_bignum *n1, t_bignum *n2)
+{
+	char	buf[MAX_SIZE];
+	int		i;
+	int		carry;
+	int8_t 	tmp;
+
+	i = 0;
+	carry = 0;
+	if (bignum_cmp(n1, n2) == LESS)
+		ft_swap(&n1, &n2);
+	while (n1->value[i] && n2->value[i])
+	{
+		tmp = (n1->value[i] - '0') - (n2->value[i] - '0') - carry;
+		carry = (tmp < 0);
+		if (carry)
+			tmp += 10;
+		buf[i++] = tmp % 10 + '0';
+	}
+	while (n1->value[i])
+	{
+		tmp = (n1->value[i] - '0') - carry;
+		carry = (tmp < 0);
+		if (carry)
+			tmp += 10;
+		buf[i++] = tmp % 10 + '0';
+	}
+	while (i > 0 && buf[--i] == '0')
+		buf[i] = '\0';
+	return (!buf[0] ? int2bignum(0) : str2bignum((char*)buf, 0, 0));
 }
 
 int8_t		bignum_cmp(t_bignum *n1, t_bignum *n2)
@@ -115,11 +165,12 @@ int8_t		bignum_cmp(t_bignum *n1, t_bignum *n2)
 	}
 	return (EQUAL);
 }
+
 t_bignum	*bignum_square(t_bignum	*n)
 {
 	int		tmp;
 	int		carry;
-	char	buf[2 * n->size];
+	char	buf[2 * n->size + 2];
 	int		i;
 	int		j;
 
@@ -127,20 +178,23 @@ t_bignum	*bignum_square(t_bignum	*n)
 	ft_memset(buf, '\0', 2 * n->size + 1);
 	while (n->value[i])
 	{
-		tmp = (!buf[2 * i] ? '0' : buf[2 * i]) - '0' + (n->value[i] - '0') * (n->value[i] - '0');
-		buf[2 * i] = (tmp % 10) + '0';
+		tmp = (!buf[i + i] ? 0 : buf[i + i] - '0') + (n->value[i] - '0') * (n->value[i] - '0');
+		buf[i + i] = (tmp % 10) + '0';
 		carry = tmp / 10;
 		j = i + 1;
 		while (n->value[j])
 		{
-			tmp = 2 * (n->value[j] - '0') * (n->value[i] - '0') + (!buf[i + j] ? '0' : buf[i + j]) - '0' + carry;
+			tmp = (n->value[i] - '0') * (n->value[j] - '0');
+			tmp = (!buf[i + j] ? 0 : buf[i + j] - '0') + tmp + tmp + carry;
 			buf[i + j++] = (tmp % 10) + '0';
 			carry = tmp / 10;
 		}
-		if (carry)
-			buf[i + n->size] = '0' + carry;
-//		buf[i++ + n->size] = '0' + carry;
-//		j = i;
+		while (carry)
+		{
+			tmp = (!buf[i + j] ? 0 : buf[i + j] - '0') + carry;
+			buf[i + j++] = (tmp % 10) + '0';
+			carry = tmp / 10;
+		}
 		i++;
 	}
 	return (str2bignum(buf, 0 , 0));
@@ -154,9 +208,12 @@ t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2)
 	int			i;
 	int			j;
 
-	if (!(i = 0) && !(j = 0) && bignum_cmp(n1, n2) < 0)
+	if (bignum_cmp(n1, n2) < 0)
 		ft_swap(n1, n2);
+	if (n2->size == 1 && *(n2->value) == '0')
+		return (int2bignum(0));
 	ft_memset(buf, 0, MAX_SIZE);
+	i = 0;
 	while (n1->value[i])
 	{
 		carry = 0;
@@ -169,10 +226,6 @@ t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2)
 		}
 		buf[i++ + j] = carry ? '0' + carry : '\0';
 	}
-//	if (res == n1)
-//		free(n1);
-//	else if (res == n2)
-//		free(n2);
 	return (str2bignum(buf, 0, 0));
 }
 
@@ -263,7 +316,26 @@ t_bignum	*bignum_pow(t_bignum *n, uint64_t p)
 			res = bignum_mul(res, s);
 		p >>= 1u;
 		if (p)
-			s = bignum_mul(s, s);
+			s = bignum_square(s);
+//			s = bignum_mul(s, s);
 	}
 	return (res);
+}
+
+t_bignum	*bignum_lshift(t_bignum *num, int shift)
+{
+	char	buf[MAX_SIZE];
+	int		i;
+
+	if (num->value[0] == '0' && num->size == 1)
+		return (int2bignum(0));
+	i = 0;
+	ft_memcpy(buf + shift, num->value, num->size);
+	buf[num->size + shift] = '\0';
+	while (shift > 0)
+	{
+		buf[i++] = '0';
+		shift--;
+	}
+	return (str2bignum((char*)buf, 0, 0));
 }

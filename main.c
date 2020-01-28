@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 17:07:42 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/26 17:00:10 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/28 15:24:14 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,15 @@ int main(int argc, char **argv)
 //
 //	printf("%.1f\n", 36.45);
 
-	long double		number = 123.3;
+	long double		number = LDBL_MAX;
 	t_dbl2int		convert;
 
 	convert.dbl = number;
 //	output_ldbl(convert.dbl);
-	ft_printf("%.350f\n\n", 1.e-1);
-	printf("%.350f\n", 1.e-1);
+	ft_printf("%.100Lf\n\n", number);
+	printf("%.100Lf\n", number);
 
-//	ft_printf("ft_printf:\t%.2147483649f\n",1.0);
-//	printf("printf:\t%.2147483649f\n\n", 1.0);
-//	ft_printf("ft_printf:\t%2147483649f\n",1.0);
-//	printf("printf:\t%2147483649f\n\n", 1.0);
+//	ft_printf("%.1150Lf|%.1150Lf|%.1150Lf|%.1150Lf\n", 0x1p-1074, 0x1.ffffffffffffep-1023, 0x1.4e46p-1058, 0x1.59a8b0c3dp-1037);
+//	printf("%.1150f|%.1150f|%.1150f|%.1150f", 0x1p-1074, 0x1.ffffffffffffep-1023, 0x1.4e46p-1058, 0x1.59a8b0c3dp-1037);
 	return (0);
 }
