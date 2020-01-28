@@ -76,13 +76,21 @@ typedef struct	s_decimal
 	uint8_t		sign;
 }				t_decimal;
 
+typedef struct s_split
+{
+	t_bignum	*hi;
+	t_bignum	*lo;
+	size_t		m;
+}				t_split;
+
 /**
 ** Init functions
 */
 
 t_bignum	*int2bignum(__uint128_t num);
-t_bignum	*str2bignum(char *num, u_int8_t flag_reverse);
-void		del_bignum(t_bignum **num);
+//t_bignum	*str2bignum(char *num);
+t_bignum	*str2bignum(char *num, int start, int end);
+void		del_bignum(t_bignum *num);
 
 /**
 ** Arithmetic operations
@@ -91,13 +99,13 @@ void		del_bignum(t_bignum **num);
 t_bignum	 *bignum_add(t_bignum *n1, t_bignum *n2);
 t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2);
 t_bignum	*bignum_pow(t_bignum *num, uint64_t p);
+t_bignum	*bignum_square(t_bignum *num);
 
 /**
 ** Compare operations
 */
 
 int8_t		bignum_cmp(t_bignum *n1, t_bignum *n2);
-void		print_bignum(t_bignum *num, int e);
 char		*ftoa(long double val, int prec, u_int8_t flag);
 
 #endif

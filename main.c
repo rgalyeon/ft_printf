@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 17:07:42 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/23 22:11:04 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/26 17:00:10 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,28 @@
 #include <float.h>
 #include <math.h>
 
-int *foo(int x)
+void	output_ldbl(long double value)
 {
-	int array[x];
+	t_dbl2int	convert;
+	uint64_t	mantissa;
+	int32_t		exponent;
+	uint8_t		sign;
+	int			i;
 
-	array[0] = 5;
-	return (&array);
+	i = 79;
+	convert.dbl = value;
+	while (i >= 0)
+	{
+		ft_printf("%d", (int)(convert.bits >> i) & 1u);
+		if (i == 79 || i == 64 || i == 62)
+			ft_printf(" ");
+		i--;
+	}
+	ft_printf("\n");
 }
 
 int main(int argc, char **argv)
 {
-	int x = 0;
-	int	*ptr;
-
-	x += argc == 1 ? 2 : 10;
-	ptr = foo(x);
-	ptr[0] = 21;
-	printf("ptr %d\t%p\n", ptr[0], ptr);
-
-	for (int i = 0; i < 20; i++)
-	{
-		int *ptrs = foo(1);
-		printf("%p\n", ptrs);
-		printf("%d %d\n", ptrs[0], ptrs);
-	}
-	printf("ptr %d\t%p\n", ptr[0], ptr);
-
-	int *p = foo(x);
-	printf("ptr %p\t%p\n", ptr, p);
 //	int *t = foo(1000);
 //	*(t + 3984 / 4) = 5;
 //	printf("t %d\t%p\n", t[0], t);
@@ -88,7 +82,18 @@ int main(int argc, char **argv)
 //	printf("%.1f\n", 155.645);
 //
 //	printf("%.1f\n", 36.45);
-//	ft_printf("this %f float\n", 1.5);
-//	printf("this %f float\n\n", 1.5);
 
+	long double		number = 123.3;
+	t_dbl2int		convert;
+
+	convert.dbl = number;
+//	output_ldbl(convert.dbl);
+	ft_printf("%.350f\n\n", 1.e-1);
+	printf("%.350f\n", 1.e-1);
+
+//	ft_printf("ft_printf:\t%.2147483649f\n",1.0);
+//	printf("printf:\t%.2147483649f\n\n", 1.0);
+//	ft_printf("ft_printf:\t%2147483649f\n",1.0);
+//	printf("printf:\t%2147483649f\n\n", 1.0);
+	return (0);
 }

@@ -12,6 +12,24 @@
 
 #include "ft_printf.h"
 
+void		print(uint64_t	val, uint8_t bits)
+{
+	unsigned long long int	bit;
+	int						index;
+
+	bit = 1ull << 63u;
+	index = bits - 1;
+	while (index >= 0)
+	{
+		ft_printf("%d", (int)((val >> (unsigned long long)index) & 1u));
+		if (index % 4 == 0)
+			ft_printf(" ");
+		index--;
+		bit >>= 1u;
+	}
+	ft_printf("\n");
+}
+
 t_decimal	*dbl2s(double val)
 {
 	t_conv		dbl;
@@ -49,15 +67,26 @@ t_decimal	*ldbl2s(long double val)
 	num->sign = (dbl2int.bits >> (LDBL_MANTISSA_BITS + LDBL_EXPONENT_BITS)) & 1u;
 	num->exponent = (dbl2int.bits >> LDBL_MANTISSA_BITS) & ((1u << LDBL_EXPONENT_BITS) - 1u);
 	num->mantissa = dbl2int.bits & MANTISSA_MASK;
-	if (num->exponent == LDBL_EXP_MAX)
+//	ft_printf("m: ");
+//	print(num->mantissa, 64);
+//	ft_printf("e: ");
+//	print(num->exponent, 15);
+	if (num->exponent == MAX_EXPONENT || num->exponent == LDBL_EXP_MAX ||
+		(!num->exponent && !num->mantissa))
 		return (num);
 	num->exponent++;
+//	print(num->exponent, 15);
 	e2 = num->exponent == 0 ? 1 - LDBL_MANTISSA_BITS - LDBL_BIAS :
 			num->exponent - LDBL_MANTISSA_BITS - LDBL_BIAS; // ???
 	m2 = num->exponent == 0 ? num->mantissa :
 			num->mantissa | (1ul << (LDBL_MANTISSA_BITS - 1u));
+//	ft_printf("e: %d\tm: %llu\n", e2, m2);
 	num->mantissa = m2;
 	num->exponent = e2;
+//	ft_printf("m2: ");
+//	print(num->mantissa, 64);
+//	ft_printf("e2: ");
+//	print(num->exponent, 15);
 	return (num);
 }
 
@@ -73,17 +102,18 @@ t_bignum	*mul_by_pow(t_bignum *num, int base, uint64_t p)
 		return (NULL);
 	if (!(res = bignum_mul(num, n_pow)))
 		return (NULL);
-	del_bignum(&n_pow);
-	del_bignum(&n);
+	del_bignum(n_pow);
+	del_bignum(n);
 	return (res);
 }
 
-char		*special_copy(t_decimal *dec)
+char		*special_copy(t_decimal *dec, int prec)
 {
 	char	*res;
 	int		len;
 
 	len = dec->sign + (dec->mantissa || dec->exponent ? 3 : 1);
+	len += !dec->exponent && !dec->mantissa && prec > 0 ? prec + 1: 0;
 	if (!(res = (char*)malloc(sizeof(char) * len + 1)))
 		return (NULL);
 	if (dec->sign)
@@ -93,7 +123,15 @@ char		*special_copy(t_decimal *dec)
 	else if (dec->exponent)
 		ft_memcpy(res + dec->sign, INF, sizeof(INF));
 	else
+	{
 		ft_memcpy(res + dec->sign, ZERO_V, sizeof(ZERO_V));
+		if (prec > 0)
+		{
+			res[dec->sign + 1] = '.';
+			ft_memset(res + dec->sign + 2, '0', prec);
+			res[dec->sign + prec + 2] = '\0';
+		}
+	}
 	free(dec);
 	return (res);
 }
@@ -113,11 +151,10 @@ t_bignum	*ryu(t_decimal *num)
 	else
 		if (!(res = mul_by_pow(m2, 5, 0 - num->exponent)))
 			return (NULL);
-	del_bignum(&m2);
+	del_bignum(m2);
 	return (res);
 }
 
-// TODO add precision to zero output
 char	*out_format(t_bignum *number, int prec, int pow, int sign)
 {
 	char	*format;
@@ -185,45 +222,19 @@ int		dbl_rounding(t_bignum *num, t_decimal *dec, int prec, int integral)
 	return (0);
 }
 
-char	*zero(t_decimal *dec, int prec)
-{
-	int		len;
-	int		index;
-	char	*res;
-
-	len = 1 + dec->sign + (prec > 0 ? prec + 1 : 0);
-	if (!(res = (char*)malloc(sizeof(char) * len + 1)))
-		return (NULL);
-	if (dec->sign)
-		res[0] = '-';
-	res[dec->sign] = '0';
-	index = dec->sign + 1;
-	if (prec > 0)
-		res[index++] = '.';
-	while (prec > 0)
-	{
-		res[index++] = '0';
-		prec--;
-	}
-	res[index] = '\0';
-	free(dec);
-	return (res);
-}
-
 char	*ftoa(long double val, int prec, uint8_t flag)
 {
 	t_decimal	*dec;
 	t_bignum	*all_num;
 	char		*out;
 
-	if (!(flag & LENGTH_LONG_DOUBLE) && !(dec = dbl2s(val)))
+//	if (!(dec = dbl2s(val)))
+//		return (NULL);
+	if (!(dec = ldbl2s(val)))
 		return (NULL);
-	else if (!(dec = ldbl2s(val)))
-		return (NULL);
-	if (dec->exponent == MAX_EXPONENT || dec->exponent == LDBL_EXP_MAX)
-		return (special_copy(dec));
-	if ((!dec->exponent && !dec->mantissa) || (dec->exponent == ZERO_EXPONENT && dec->mantissa == ZERO_MANTISSA))
-		return (zero(dec, prec));
+	if (dec->exponent == MAX_EXPONENT || dec->exponent == LDBL_EXP_MAX ||
+		(!dec->exponent && !dec->mantissa))
+		return (special_copy(dec, prec));
 	if (!(all_num = ryu(dec)))
 	{
 		free(dec);
@@ -233,10 +244,10 @@ char	*ftoa(long double val, int prec, uint8_t flag)
 	if (!(out = out_format(all_num, prec, dec->exponent + all_num->size, dec->sign)))
 	{
 		free(dec);
-		del_bignum(&all_num);
+		del_bignum(all_num);
 		return (NULL);
 	}
 	free(dec);
-	del_bignum(&all_num);
+	del_bignum(all_num);
 	return (out);
 }

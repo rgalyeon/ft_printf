@@ -29,29 +29,47 @@ t_bignum	*int2bignum(__uint128_t num)
 	return (bignum);
 }
 
-void		del_bignum(t_bignum **num)
+void		del_bignum(t_bignum *num)
 {
-	free((*num)->value);
-	free(*num);
+	free(num->value);
+	free(num);
 }
 
-t_bignum	*str2bignum(char *str, uint8_t flag_rev)
+//t_bignum	*str2bignum(char *str)
+//{
+//	t_bignum	*bignum;
+//	size_t		len;
+//	int			err;
+//
+//	len = ft_strlen(str);
+//	if (!(bignum = (t_bignum*)malloc(sizeof(t_bignum))))
+//		return (NULL);
+//	if (!(bignum->value = ft_strdup(str)))
+//	{
+//		free(bignum);
+//		return (NULL);
+//	}
+//	bignum->size = len;
+//	return (bignum);
+//}
+
+t_bignum	*str2bignum(char *str, int start, int end)
 {
-	t_bignum	*bignum;
+	t_bignum	*num;
 	size_t		len;
 
-	len = ft_strlen(str);
-	if (!(bignum = (t_bignum*)malloc(sizeof(t_bignum))))
+	len = !start && !end ? ft_strlen(str) : end - start + 1;
+	if (!(num = (t_bignum*)malloc(sizeof(t_bignum))))
 		return (NULL);
-	if (!(bignum->value = ft_strdup(str)))
+	if (!(num->value = (char*)malloc(sizeof(char) * len + 1)))
 	{
-		free(bignum);
+		free(num);
 		return (NULL);
 	}
-	if (flag_rev)
-		bignum->value = ft_strreverse(bignum->value);
-	bignum->size = len;
-	return (bignum);
+	ft_memcpy(num->value, str + start, len);
+	num->value[len] = '\0';
+	num->size = len;
+	return (num);
 }
 
 t_bignum	*bignum_add(t_bignum *n1, t_bignum *n2)
@@ -78,7 +96,7 @@ t_bignum	*bignum_add(t_bignum *n1, t_bignum *n2)
 			buf[i] = n1->value[i];
 			i++;
 		}
-	return (str2bignum((char*)buf, 0));
+	return (str2bignum((char*)buf, 0, 0));
 }
 
 int8_t		bignum_cmp(t_bignum *n1, t_bignum *n2)
@@ -96,6 +114,36 @@ int8_t		bignum_cmp(t_bignum *n1, t_bignum *n2)
 			return (n1->value[i] > n2->value[i] ? LARGER : LESS);
 	}
 	return (EQUAL);
+}
+t_bignum	*bignum_square(t_bignum	*n)
+{
+	int		tmp;
+	int		carry;
+	char	buf[2 * n->size];
+	int		i;
+	int		j;
+
+	i = 0;
+	ft_memset(buf, '\0', 2 * n->size + 1);
+	while (n->value[i])
+	{
+		tmp = (!buf[2 * i] ? '0' : buf[2 * i]) - '0' + (n->value[i] - '0') * (n->value[i] - '0');
+		buf[2 * i] = (tmp % 10) + '0';
+		carry = tmp / 10;
+		j = i + 1;
+		while (n->value[j])
+		{
+			tmp = 2 * (n->value[j] - '0') * (n->value[i] - '0') + (!buf[i + j] ? '0' : buf[i + j]) - '0' + carry;
+			buf[i + j++] = (tmp % 10) + '0';
+			carry = tmp / 10;
+		}
+		if (carry)
+			buf[i + n->size] = '0' + carry;
+//		buf[i++ + n->size] = '0' + carry;
+//		j = i;
+		i++;
+	}
+	return (str2bignum(buf, 0 , 0));
 }
 
 t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2)
@@ -121,7 +169,11 @@ t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2)
 		}
 		buf[i++ + j] = carry ? '0' + carry : '\0';
 	}
-	return (str2bignum(buf, 0));
+//	if (res == n1)
+//		free(n1);
+//	else if (res == n2)
+//		free(n2);
+	return (str2bignum(buf, 0, 0));
 }
 
 t_bignum	*bignum_mul_by_int(t_bignum *n, uint64_t m)
@@ -146,7 +198,7 @@ t_bignum	*bignum_mul_by_int(t_bignum *n, uint64_t m)
 		carry /= 10;
 	}
 	buf[i] = '\0';
-	return (str2bignum(buf, 0));
+	return (str2bignum(buf, 0, 0));
 }
 
 t_bignum	*bignum_pow2(t_bignum *num)
@@ -157,39 +209,61 @@ t_bignum	*bignum_pow2(t_bignum *num)
 	return (ptr);
 }
 
-t_bignum	*bignum_pow(t_bignum *num, uint64_t p)
+//t_bignum	*bignum_pow(t_bignum *num, uint64_t p)
+//{
+//	t_bignum	*y;
+//	t_bignum	*ptr;
+//	t_bignum	*res;
+//	t_bignum	*x;
+//
+//	if (p == 0)
+//		return (int2bignum(1));
+//	y = int2bignum(1);
+//	x = str2bignum(num->value, 0);
+//	while (p > 1)
+//	{
+//		if (p & 1u)
+//		{
+//			ptr = y;
+//			y = bignum_mul(x, y);
+//			del_bignum(&ptr);
+//			ptr = x;
+//			x = bignum_pow2(x);
+//			p = (p - 1) >> 1u;
+//			del_bignum(&ptr);
+//		}
+//		else
+//		{
+//			ptr = x;
+//			x = bignum_pow2(ptr);
+//			p = p >> 1u;
+//			del_bignum(&ptr);
+//		}
+//	}
+//	res = bignum_mul(x, y);
+//	del_bignum(&y);
+//	del_bignum(&x);
+//	return (res);
+//}
+
+t_bignum	*bignum_pow(t_bignum *n, uint64_t p)
 {
-	t_bignum	*y;
-	t_bignum	*ptr;
 	t_bignum	*res;
-	t_bignum	*x;
+	t_bignum	*s;
 
 	if (p == 0)
 		return (int2bignum(1));
-	y = int2bignum(1);
-	x = str2bignum(num->value, 0);
-	while (p > 1)
+	if (!(res = int2bignum(1)))
+		return (NULL);
+	if (!(s = str2bignum(n->value, 0, 0)))
+		return (NULL);
+	while (p)
 	{
 		if (p & 1u)
-		{
-			ptr = y;
-			y = bignum_mul(x, y);
-			del_bignum(&ptr);
-			ptr = x;
-			x = bignum_pow2(x);
-			p = (p - 1) >> 1u;
-			del_bignum(&ptr);
-		}
-		else
-		{
-			ptr = x;
-			x = bignum_pow2(ptr);
-			p = p >> 1u;
-			del_bignum(&ptr);
-		}
+			res = bignum_mul(res, s);
+		p >>= 1u;
+		if (p)
+			s = bignum_mul(s, s);
 	}
-	res = bignum_mul(x, y);
-	del_bignum(&y);
-	del_bignum(&x);
 	return (res);
 }
