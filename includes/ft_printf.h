@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:10:03 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/23 15:55:33 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/28 18:45:49 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,21 @@ static t_type		g_type[] =
 };
 
 /*
+** Floats
+*/
+
+char		*special_copy(t_decimal *dec, int prec);
+char		*out_format(t_bignum *number, int prec, int pow, int sign);
+int			dbl_rounding(t_bignum *num, t_decimal *dec, int prec, int integral);
+
+/*
 ** Utils for project
 */
 
 __int128			max2(__int128 a, __int128 b);
 int					ft_uint_len(__int128 nb);
 char				*ft_itoa_base(__int128 val, int base);
+void				del_dec_num(t_decimal **dec, t_bignum **num);
 
 /*
 ** Utils for development

@@ -81,7 +81,7 @@ typedef struct	s_decimal
 */
 
 t_bignum	*int2bignum(__uint128_t num);
-t_bignum	*str2bignum(char *num, u_int8_t flag_reverse);
+t_bignum	*str2bignum(char *num);
 void		del_bignum(t_bignum **num);
 
 /**

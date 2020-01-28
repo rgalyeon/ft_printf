@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: mshagga <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/20 20:07:49 by rgalyeon          #+#    #+#              #
-#    Updated: 2020/01/25 19:05:53 by rgalyeon         ###   ########.fr        #
+#    Updated: 2020/01/28 17:27:14 by mshagga          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra
+FLAGS = -Wall -Wextra -Werror
 NAME = libftprintf.a
 
 LIBFT_SRC = srcs/conv/ft_atoi.c \
@@ -50,6 +50,9 @@ SRC = srcs/ft_printf.c \
       srcs/utils/ft_itoa_base.c \
       srcs/utils/bignum.c \
       srcs/utils/ftoa.c \
+      srcs/utils/bignum_math.c \
+      srcs/utils/float_format.c \
+      srcs/utils/rounding.c \
       srcs/utils.c \
       $(addprefix libft/, $(LIBFT_SRC))
 

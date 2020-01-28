@@ -6,7 +6,7 @@
 /*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 15:39:14 by mshagga           #+#    #+#             */
-/*   Updated: 2020/01/25 23:50:31 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/28 16:03:23 by mshagga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void		del_bignum(t_bignum **num)
 	free(*num);
 }
 
-t_bignum	*str2bignum(char *str, uint8_t flag_rev)
+t_bignum	*str2bignum(char *str)
 {
 	t_bignum	*bignum;
 	size_t		len;
@@ -48,37 +48,8 @@ t_bignum	*str2bignum(char *str, uint8_t flag_rev)
 		free(bignum);
 		return (NULL);
 	}
-	if (flag_rev)
-		bignum->value = ft_strreverse(bignum->value);
 	bignum->size = len;
 	return (bignum);
-}
-
-t_bignum	*bignum_add(t_bignum *n1, t_bignum *n2)
-{
-	char		buf[MAX_SIZE];
-	int			i;
-	int8_t		carry;
-	int8_t		tmp;
-
-	i = 0;
-	carry = 0;
-	if (bignum_cmp(n1, n2) == LESS)
-		ft_swap(&n1, &n2);
-	while (n1->value[i] && n2->value[i])
-	{
-		tmp = n1->value[i] - '0' + n2->value[i] - '0' + carry;
-		carry = (tmp >= 10);
-		buf[i] = tmp % 10 + '0';
-		i++;
-	}
-	if (i < n1->size)
-		while (n1->value[i])
-		{
-			buf[i] = n1->value[i];
-			i++;
-		}
-	return (str2bignum((char*)buf, 0));
 }
 
 int8_t		bignum_cmp(t_bignum *n1, t_bignum *n2)
@@ -98,32 +69,6 @@ int8_t		bignum_cmp(t_bignum *n1, t_bignum *n2)
 	return (EQUAL);
 }
 
-t_bignum	*bignum_mul(t_bignum *n1, t_bignum *n2)
-{
-	int			tmp;
-	int8_t		carry;
-	char		buf[MAX_SIZE];
-	int			i;
-	int			j;
-
-	if (!(i = 0) && !(j = 0) && bignum_cmp(n1, n2) < 0)
-		ft_swap(n1, n2);
-	ft_memset(buf, 0, MAX_SIZE);
-	while (n1->value[i])
-	{
-		carry = 0;
-		j = 0;
-		while (n2->value[j])
-		{
-			tmp = C2INT(n1->value[i]) * C2INT(n2->value[j]) + C2INT(buf[i + j]) + carry;
-			buf[i + j++] = INT2C(tmp % 10);
-			carry = tmp / 10;
-		}
-		buf[i++ + j] = carry ? '0' + carry : '\0';
-	}
-	return (str2bignum(buf, 0));
-}
-
 t_bignum	*bignum_mul_by_int(t_bignum *n, uint64_t m)
 {
 	int			i;
@@ -131,7 +76,7 @@ t_bignum	*bignum_mul_by_int(t_bignum *n, uint64_t m)
 	uint64_t	carry;
 	uint64_t	tmp;
 
-	i  = 0;
+	i = 0;
 	carry = 0;
 	while (n->value[i])
 	{
@@ -146,50 +91,5 @@ t_bignum	*bignum_mul_by_int(t_bignum *n, uint64_t m)
 		carry /= 10;
 	}
 	buf[i] = '\0';
-	return (str2bignum(buf, 0));
-}
-
-t_bignum	*bignum_pow2(t_bignum *num)
-{
-	t_bignum	*ptr;
-
-	ptr = bignum_mul(num, num);
-	return (ptr);
-}
-
-t_bignum	*bignum_pow(t_bignum *num, uint64_t p)
-{
-	t_bignum	*y;
-	t_bignum	*ptr;
-	t_bignum	*res;
-	t_bignum	*x;
-
-	if (p == 0)
-		return (int2bignum(1));
-	y = int2bignum(1);
-	x = str2bignum(num->value, 0);
-	while (p > 1)
-	{
-		if (p & 1u)
-		{
-			ptr = y;
-			y = bignum_mul(x, y);
-			del_bignum(&ptr);
-			ptr = x;
-			x = bignum_pow2(x);
-			p = (p - 1) >> 1u;
-			del_bignum(&ptr);
-		}
-		else
-		{
-			ptr = x;
-			x = bignum_pow2(ptr);
-			p = p >> 1u;
-			del_bignum(&ptr);
-		}
-	}
-	res = bignum_mul(x, y);
-	del_bignum(&y);
-	del_bignum(&x);
-	return (res);
+	return (str2bignum(buf));
 }

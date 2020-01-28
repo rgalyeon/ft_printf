@@ -9,6 +9,6 @@ aux_source_directory(srcs/ src)
 aux_source_directory(srcs/utils utils)
 aux_source_directory(srcs/processing_types types)
 
-add_executable(ft_printf ${src} ${utils} ${types} main.c
-		srcs/processing_types/processing_f.c)
+add_executable(ft_printf ${src} ${utils} ${types}
+		main.c)
 target_link_libraries(ft_printf ${PROJECT_SOURCE_DIR}/libft/libft.a)
