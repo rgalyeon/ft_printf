@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mshagga <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/09 17:10:03 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/28 18:45:49 by mshagga          ###   ########.fr       */
+/*   Updated: 2020/01/29 16:22:11 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ typedef struct		s_type
 	void			(*function)(t_vec **, t_ph *placeholder, va_list args);
 }					t_type;
 
-# define TYPE	"diouxXcspf"
+# define TYPE	"diouxXcspfbBnr"
 # define CHAR	6
 
 /*
@@ -125,6 +125,8 @@ void				processing_c(t_vec **vec, t_ph *pholder, va_list arg_ptr);
 void				processing_s(t_vec **vec, t_ph *pholder, va_list arg_ptr);
 void				processing_p(t_vec **vec, t_ph *pholder, va_list arg_ptr);
 void				processing_f(t_vec **vec, t_ph *pholder, va_list arg_ptr);
+void				processing_b(t_vec **vec, t_ph *pholder, va_list arg_ptr);
+void				processing_n(t_vec **vec, t_ph *pholder, va_list arg_ptr);
 
 static t_type		g_type[] =
 {
@@ -137,16 +139,21 @@ static t_type		g_type[] =
 	{'c', processing_c},
 	{'s', processing_s},
 	{'p', processing_p},
-	{'f', processing_f}
+	{'f', processing_f},
+	{'b', processing_b},
+	{'B', processing_b},
+	{'n', processing_n},
+	{'r', processing_s}
 };
 
 /*
 ** Floats
 */
 
-char		*special_copy(t_decimal *dec, int prec);
-char		*out_format(t_bignum *number, int prec, int pow, int sign);
-int			dbl_rounding(t_bignum *num, t_decimal *dec, int prec, int integral);
+char				*special_copy(t_decimal *dec, int prec);
+char				*out_format(t_bignum *number, int prec, int pow, int sign);
+int					dbl_rounding(t_bignum *num, t_decimal *dec, int prec,
+																int integral);
 
 /*
 ** Utils for project

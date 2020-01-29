@@ -6,7 +6,7 @@
 /*   By: rgalyeon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/10 22:47:47 by rgalyeon          #+#    #+#             */
-/*   Updated: 2020/01/24 15:16:15 by rgalyeon         ###   ########.fr       */
+/*   Updated: 2020/01/28 21:24:28 by rgalyeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,7 @@ static int	parse_precision(t_ph *placeholder, char **format, va_list arg_ptr)
 	else if (**format == '*')
 	{
 		if ((precision = va_arg(arg_ptr, int)) < 0)
-		{
-			placeholder->width = (unsigned int)precision * -1;
-			placeholder->flag |= g_flag[MINUS].code;
 			precision = -1;
-		}
 		(*format)++;
 	}
 	placeholder->width = (ft_isdigit(**format) || (**format == '*')) ?
