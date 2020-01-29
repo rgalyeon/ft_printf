@@ -1,6 +1,11 @@
 # ft_printf
 School 21 (42) project. Implementation libc's printf function.
 
+More info:
+* [`Subject`](https://github.com/rgalyeon/ft_printf/blob/master/ft_printf.en.pdf) 
+* [`About codestyle`](https://github.com/rgalyeon/ft_printf/blob/master/norme.en.pdf)
+* [`Examples`](#examples)
+
 ## Format Specifiers
 
 A format specifier follows this prototype: `%[flags][width][.precision][length]type`
@@ -69,3 +74,66 @@ The length sub-specifier modifies the length of the data type.
 ### Return Value
 
 Upon successful return, `ft_printf()` return the number of characters written, _excluding_ the terminating null character used to end the string. If any error is encountered, `-1` is returned.
+
+### Examples
+
+#### Standard specifiers (diouxXspcf)
+```C
+#include "ft_printf.h"
+
+int main()
+{
+    ft_printf("1. Print int (%%d): %d\n", 42);
+    ft_printf("2. Print uint (%%u): %10u\n", -42);
+    ft_printf("3. Print unsigned octal (%%o): %o\n", 42);
+    ft_printf("4. Print unsigned hex (%%x): %#x\n", 42);
+    ft_printf("5. Print unsigned hex (%%X): %#X\n", 42);
+    ft_printf("6. Print char (%%c): %c\n", 97);
+    ft_printf("7. Print string (%%s): %s\n", "Hello, world!");
+    ft_printf("8. Print pointer address (%%p): %p\n", NULL);
+    ft_printf("9. Print float (%%f): %.30f\n", 0.3);
+    return (0);
+}
+```
+
+Output:
+```
+$> 1. Print int (%d): 42
+$> 2. Print uint (%u): 4294967254
+$> 3. Print unsigned octal (%o): 52
+$> 4. Print unsigned hex (%x): 0x2a
+$> 5. Print unsigned hex (%X): 0X2A
+$> 6. Print char (%c): a
+$> 7. Print string (%s): Hello, world!
+$> 8. Print pointer address (%p): 0x0
+$> 9. Print float (%f): 0.299999999999999988897769753748
+```
+#### Bonus specifiers (bBr)
+
+```C
+#include "ft_printf.h"
+
+int main()
+{
+    ft_printf("1. Print binary (%%b): %b\n", 2142);
+    ft_printf("2. Print binary (%%#b): %#b\n", 2142);
+    ft_printf("3. Print binary (%%B): %B\n", 101);
+    ft_printf("4. Print binary (%%#B): %#B\n", 101);
+    ft_printf("5. Print string with non-printable chars (%%r): %r\n", "\t \b \n \r");
+    return (0);
+}
+```
+Output:
+
+```
+$> 1. Print binary (%b): 100001011110
+$> 2. Print binary (%#b): 1000 01011110
+$> 3. Print binary (%B): 00000000000000000000000001100101
+$> 4. Print binary (%#B): 00000000 00000000 00000000 01100101
+$> 5. Print string with non-printable chars (%r): ^9 ^8 ^10 ^13
+```
+
+### Feedback
+If you find a `bug/error/typo` please contact me:
+* [LinkedIn](https://www.linkedin.com/in/dmitry-filin/)
+* [ВКонтакте](https://vk.com/rgalyeon)
